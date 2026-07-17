@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "theory_id": "unknown_example",
+  "source_statements": [
+    {
+      "id": "s1",
+      "text": "Ava is quiet."
+    },
+    {
+      "id": "q1",
+      "text": "Is Ava young?"
+    }
+  ],
+  "entities": [
+    {
+      "id": "ava",
+      "label": "Ava"
+    }
+  ],
+  "predicates": [
+    {
+      "name": "quiet",
+      "arity": 1
+    },
+    {
+      "name": "young",
+      "arity": 1
+    }
+  ],
+  "facts": [
+    {
+      "predicate": "quiet",
+      "arguments": [
+        {
+          "kind": "entity",
+          "id": "ava"
+        }
+      ],
+      "negated": false,
+      "source_id": "s1"
+    }
+  ],
+  "rules": [],
+  "query": {
+    "predicate": "young",
+    "arguments": [
+      {
+        "kind": "entity",
+        "id": "ava"
+      }
+    ],
+    "negated": false,
+    "source_id": "q1"
+  }
+}

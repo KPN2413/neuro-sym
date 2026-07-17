@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "dataset_name": "ProofWriter",
+  "dataset_version": "V2020.12.3",
+  "source_url": "https://aristo-data-public.s3.amazonaws.com/proofwriter/proofwriter-dataset-V2020.12.3.zip",
+  "observed_at": "2026-07-13T12:22:09+00:00",
+  "http_metadata": {
+    "status": 200,
+    "content_length": 214185889,
+    "content_type": "application/zip",
+    "last_modified": "Wed, 06 Oct 2021 23:37:28 GMT",
+    "etag": "abe79e94eb3205ff0978c88eeffaeedc-26",
+    "etag_is_multipart_and_not_treated_as_checksum": true
+  },
+  "archive_observation": {
+    "size_bytes": 214185889,
+    "sha256": "bbc5694901e8306d0bd659aa1ad53ccfd02c201864f4b320ffa3777827d1fc26",
+    "checksum_status": "observed-only",
+    "publisher_verified_checksum": false,
+    "zip_entry_count": 132,
+    "file_count": 111,
+    "uncompressed_bytes": 3413583184,
+    "top_level_directory": "proofwriter-dataset-V2020.12.3",
+    "integrity_test_passed": true,
+    "symbolic_link_entries": 0
+  },
+  "archive_documentation": {
+    "readme_present": true,
+    "license_file_present": false,
+    "citation_file_present": false,
+    "license_status": "not-stated-in-archive"
+  }
+}

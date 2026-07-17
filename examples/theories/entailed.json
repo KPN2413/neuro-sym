@@ -1,0 +1,97 @@
+{
+  "schema_version": "1.0",
+  "theory_id": "entailed_example",
+  "source_statements": [
+    {
+      "id": "s1",
+      "text": "Bob is kind."
+    },
+    {
+      "id": "s2",
+      "text": "If someone is kind, then they are helpful."
+    },
+    {
+      "id": "q1",
+      "text": "Is Bob helpful?"
+    }
+  ],
+  "entities": [
+    {
+      "id": "bob",
+      "label": "Bob",
+      "type": "Person"
+    }
+  ],
+  "predicates": [
+    {
+      "name": "kind",
+      "arity": 1,
+      "argument_types": ["Person"]
+    },
+    {
+      "name": "helpful",
+      "arity": 1,
+      "argument_types": ["Person"]
+    }
+  ],
+  "facts": [
+    {
+      "predicate": "kind",
+      "arguments": [
+        {
+          "kind": "entity",
+          "id": "bob"
+        }
+      ],
+      "negated": false,
+      "source_id": "s1"
+    }
+  ],
+  "rules": [
+    {
+      "id": "r1",
+      "variables": [
+        {
+          "name": "X",
+          "type": "Person"
+        }
+      ],
+      "body": [
+        {
+          "predicate": "kind",
+          "arguments": [
+            {
+              "kind": "variable",
+              "name": "X"
+            }
+          ],
+          "negated": false,
+          "source_id": "s2"
+        }
+      ],
+      "head": {
+        "predicate": "helpful",
+        "arguments": [
+          {
+            "kind": "variable",
+            "name": "X"
+          }
+        ],
+        "negated": false,
+        "source_id": "s2"
+      },
+      "source_id": "s2"
+    }
+  ],
+  "query": {
+    "predicate": "helpful",
+    "arguments": [
+      {
+        "kind": "entity",
+        "id": "bob"
+      }
+    ],
+    "negated": false,
+    "source_id": "q1"
+  }
+}

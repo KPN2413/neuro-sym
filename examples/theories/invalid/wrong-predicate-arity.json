@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "theory_id": "wrong_arity",
+  "source_statements": [
+    { "id": "s1", "text": "Ada greets Bob and Cora." },
+    { "id": "q1", "text": "Does Ada greet Bob?" }
+  ],
+  "entities": [
+    { "id": "ada", "label": "Ada" },
+    { "id": "bob", "label": "Bob" },
+    { "id": "cora", "label": "Cora" }
+  ],
+  "predicates": [
+    { "name": "greets", "arity": 2 }
+  ],
+  "facts": [
+    {
+      "predicate": "greets",
+      "arguments": [
+        { "kind": "entity", "id": "ada" },
+        { "kind": "entity", "id": "bob" },
+        { "kind": "entity", "id": "cora" }
+      ],
+      "negated": false,
+      "source_id": "s1"
+    }
+  ],
+  "rules": [],
+  "query": {
+    "predicate": "greets",
+    "arguments": [
+      { "kind": "entity", "id": "ada" },
+      { "kind": "entity", "id": "bob" }
+    ],
+    "negated": false,
+    "source_id": "q1"
+  }
+}

@@ -1,0 +1,324 @@
+{
+  "$defs": {
+    "ExampleProvenance": {
+      "additionalProperties": false,
+      "properties": {
+        "content_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "dataset_manifest_reference": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dataset Manifest Reference"
+        },
+        "loader_name": {
+          "default": "proofwriter",
+          "title": "Loader Name",
+          "type": "string"
+        },
+        "loader_version": {
+          "title": "Loader Version",
+          "type": "string"
+        },
+        "record_line": {
+          "minimum": 1,
+          "title": "Record Line",
+          "type": "integer"
+        },
+        "record_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Record Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "loader_version",
+        "record_line",
+        "record_sha256",
+        "content_sha256"
+      ],
+      "title": "ExampleProvenance",
+      "type": "object"
+    },
+    "GoldLabel": {
+      "enum": [
+        "ENTAILED",
+        "CONTRADICTED",
+        "UNKNOWN"
+      ],
+      "title": "GoldLabel",
+      "type": "string"
+    },
+    "JsonValue": {},
+    "SourceStatement": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "fact",
+            "rule",
+            "sentence"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "representation": {
+          "anyOf": [
+            {
+              "maxLength": 20000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Representation"
+        },
+        "source_id": {
+          "maxLength": 256,
+          "minLength": 1,
+          "title": "Source Id",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 10000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "text",
+        "kind"
+      ],
+      "title": "SourceStatement",
+      "type": "object"
+    },
+    "Split": {
+      "enum": [
+        "train",
+        "dev",
+        "test"
+      ],
+      "title": "Split",
+      "type": "string"
+    },
+    "StructuredStatement": {
+      "additionalProperties": false,
+      "properties": {
+        "representation": {
+          "anyOf": [
+            {
+              "maxLength": 20000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Representation"
+        },
+        "text": {
+          "maxLength": 10000,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "StructuredStatement",
+      "type": "object"
+    },
+    "WorldAssumption": {
+      "enum": [
+        "OWA",
+        "CWA"
+      ],
+      "title": "WorldAssumption",
+      "type": "string"
+    }
+  },
+  "$id": "https://verilogic-ns.local/schemas/benchmark-example.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Versioned, model-independent normalized example contract for ProofWriter evaluation.",
+  "properties": {
+    "context": {
+      "minLength": 1,
+      "title": "Context",
+      "type": "string"
+    },
+    "dataset_name": {
+      "const": "proofwriter",
+      "default": "proofwriter",
+      "title": "Dataset Name",
+      "type": "string"
+    },
+    "dataset_version": {
+      "maxLength": 64,
+      "minLength": 1,
+      "title": "Dataset Version",
+      "type": "string"
+    },
+    "example_id": {
+      "maxLength": 512,
+      "minLength": 1,
+      "title": "Example Id",
+      "type": "string"
+    },
+    "gold_label": {
+      "$ref": "#/$defs/GoldLabel"
+    },
+    "gold_proofs": {
+      "anyOf": [
+        {
+          "additionalProperties": {
+            "$ref": "#/$defs/JsonValue"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Gold Proofs"
+    },
+    "original_raw_label": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "string"
+        }
+      ],
+      "title": "Original Raw Label"
+    },
+    "provenance": {
+      "$ref": "#/$defs/ExampleProvenance"
+    },
+    "query": {
+      "maxLength": 10000,
+      "minLength": 1,
+      "title": "Query",
+      "type": "string"
+    },
+    "question_id": {
+      "anyOf": [
+        {
+          "maxLength": 256,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Question Id"
+    },
+    "reasoning_depth": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reasoning Depth"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_relative_path": {
+      "maxLength": 2048,
+      "minLength": 1,
+      "title": "Source Relative Path",
+      "type": "string"
+    },
+    "source_statements": {
+      "items": {
+        "$ref": "#/$defs/SourceStatement"
+      },
+      "minItems": 1,
+      "title": "Source Statements",
+      "type": "array"
+    },
+    "split": {
+      "$ref": "#/$defs/Split"
+    },
+    "structured_facts": {
+      "additionalProperties": {
+        "$ref": "#/$defs/StructuredStatement"
+      },
+      "title": "Structured Facts",
+      "type": "object"
+    },
+    "structured_rules": {
+      "additionalProperties": {
+        "$ref": "#/$defs/StructuredStatement"
+      },
+      "title": "Structured Rules",
+      "type": "object"
+    },
+    "theory_id": {
+      "anyOf": [
+        {
+          "maxLength": 256,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Theory Id"
+    },
+    "variant": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Variant",
+      "type": "string"
+    },
+    "world_assumption": {
+      "$ref": "#/$defs/WorldAssumption"
+    }
+  },
+  "required": [
+    "example_id",
+    "dataset_version",
+    "variant",
+    "split",
+    "source_statements",
+    "context",
+    "query",
+    "gold_label",
+    "original_raw_label",
+    "world_assumption",
+    "source_relative_path",
+    "provenance"
+  ],
+  "title": "VeriLogic-NS Normalized Benchmark Example v1",
+  "type": "object"
+}

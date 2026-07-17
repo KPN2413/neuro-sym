@@ -1,0 +1,25 @@
+schema_version: "1.0"
+dataset:
+  name: proofwriter
+  data_source: backend/tests/fixtures/proofwriter/proofwriter-dataset-V2020.12.3
+  version: V2020.12.3
+  variant: depth-1
+  world_assumption: OWA
+  splits:
+    - train
+    - dev
+  manifest_reference: datasets/proofwriter/manifest.example.json
+sampling:
+  seed: 17
+  max_examples: 6
+  allowed_splits:
+    - train
+    - dev
+  allow_test: false
+  strategy: balanced
+predictor:
+  kind: constant_unknown
+  version: "1.0"
+run:
+  output_directory: results/runs
+  run_id_prefix: proofwriter-synthetic-smoke

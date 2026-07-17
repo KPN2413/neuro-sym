@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "theory_id": "contradicted_example",
+  "source_statements": [
+    {
+      "id": "s1",
+      "text": "Milo is not blue."
+    },
+    {
+      "id": "q1",
+      "text": "Is Milo blue?"
+    }
+  ],
+  "entities": [
+    {
+      "id": "milo",
+      "label": "Milo"
+    }
+  ],
+  "predicates": [
+    {
+      "name": "blue",
+      "arity": 1
+    }
+  ],
+  "facts": [
+    {
+      "predicate": "blue",
+      "arguments": [
+        {
+          "kind": "entity",
+          "id": "milo"
+        }
+      ],
+      "negated": true,
+      "source_id": "s1"
+    }
+  ],
+  "rules": [],
+  "query": {
+    "predicate": "blue",
+    "arguments": [
+      {
+        "kind": "entity",
+        "id": "milo"
+      }
+    ],
+    "negated": false,
+    "source_id": "q1"
+  }
+}

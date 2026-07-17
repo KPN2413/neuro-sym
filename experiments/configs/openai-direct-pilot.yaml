@@ -1,0 +1,52 @@
+schema_version: "1.0"
+condition: direct
+seed: 20260713
+predictor_version: "1.0"
+
+provider:
+  name: openai
+  api_family: responses
+  model: gpt-5.6-terra
+  reasoning_effort: low
+  max_output_tokens: 512
+  timeout_seconds: 60
+  concurrency: 3
+  retry:
+    max_attempts: 3
+    base_delay_seconds: 1
+    max_delay_seconds: 8
+    jitter_seconds: 0.25
+    circuit_breaker_threshold: 3
+
+dataset:
+  data_source: datasets/proofwriter/raw/archives/proofwriter-dataset-V2020.12.3.zip
+  dataset_manifest_reference: datasets/proofwriter/provenance.observed.json
+  archive_sha256: bbc5694901e8306d0bd659aa1ad53ccfd02c201864f4b320ffa3777827d1fc26
+  version: V2020.12.3
+  variant: depth-5
+  split: dev
+  selection_manifest: experiments/manifests/proofwriter-owa-depth5-dev-pilot.v1.json
+
+prompt:
+  path: prompts/baselines/direct/v1.md
+  version: v1
+  expected_sha256: 45ec0b919678daa881f4165217fc89a39f34eada6ef47abac4645e6752974d5f
+  output_schema_path: schemas/llm-baseline-output.v1.schema.json
+  output_schema_sha256: 314a546f0a3deb5c416b2d061fc7c1b44a127fcd8915a9f8dc4cc7ff5fa30d88
+
+pricing:
+  source_url: https://developers.openai.com/api/docs/pricing
+  as_of: 2026-07-13
+  model: gpt-5.6-terra
+  service_tier: standard
+  input_usd_per_million: 2.50
+  cached_input_usd_per_million: 0.25
+  output_usd_per_million: 15.00
+  long_context_threshold_tokens: 272000
+  long_context_input_multiplier: 2.0
+  long_context_output_multiplier: 1.5
+
+run:
+  output_directory: results/runs
+  cache_directory: results/cache/llm-responses
+  run_id_prefix: openai-direct-pilot

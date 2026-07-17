@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "theory_id": "unsafe_identifier",
+  "source_statements": [
+    { "id": "s1", "text": "Ada is calm." },
+    { "id": "q1", "text": "Is Ada calm?" }
+  ],
+  "entities": [
+    { "id": "ada", "label": "Ada" }
+  ],
+  "predicates": [
+    { "name": "exec(code)", "arity": 1 }
+  ],
+  "facts": [
+    {
+      "predicate": "calm",
+      "arguments": [
+        { "kind": "entity", "id": "ada" }
+      ],
+      "negated": false,
+      "source_id": "s1"
+    }
+  ],
+  "rules": [],
+  "query": {
+    "predicate": "calm",
+    "arguments": [
+      { "kind": "entity", "id": "ada" }
+    ],
+    "negated": false,
+    "source_id": "q1"
+  }
+}

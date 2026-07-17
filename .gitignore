@@ -1,0 +1,54 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+!**/.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.hypothesis/
+htmlcov/
+.coverage
+.coverage.*
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+next-env.d.ts
+pnpm-debug.log*
+
+# Dataset payloads and generated research outputs (keep documentation/metadata only)
+datasets/**/raw/
+datasets/**/processed/
+datasets/**/generated/
+datasets/**/*.zip
+datasets/**/*.zip.*
+datasets/**/*.part
+datasets/**/*.tmp
+# Provider response caches and all generated run/canary/smoke evidence stay local.
+results/cache/
+results/runs/
+results/canary/
+results/smoke/
+results/*
+!results/README.md
+
+# IDE and OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Logs
+*.log

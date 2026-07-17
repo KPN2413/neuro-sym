@@ -1,0 +1,1 @@
+{"id":"Synthetic-CWA-Train-1","maxD":1,"NFact":1,"NRule":0,"theory":"Pia is green.","triples":{"triple1":{"text":"Pia is green.","representation":"(\"Pia\" \"is\" \"green\" \"+\")"}},"rules":{},"questions":{"Q1":{"question":"Pia is blue.","answer":false,"QDep":0,"QLen":"","strategy":"random","proofs":"[CWA failure]"}},"allProofs":"synthetic","proofDetails":[]}

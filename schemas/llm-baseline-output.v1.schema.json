@@ -1,0 +1,27 @@
+{
+  "$defs": {
+    "GoldLabel": {
+      "enum": [
+        "ENTAILED",
+        "CONTRADICTED",
+        "UNKNOWN"
+      ],
+      "title": "GoldLabel",
+      "type": "string"
+    }
+  },
+  "$id": "https://verilogic-ns.local/schemas/llm-baseline-output.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "description": "Strict three-label output contract for direct and few-shot baselines.",
+  "properties": {
+    "label": {
+      "$ref": "#/$defs/GoldLabel"
+    }
+  },
+  "required": [
+    "label"
+  ],
+  "title": "VeriLogic-NS LLM Baseline Output v1",
+  "type": "object"
+}

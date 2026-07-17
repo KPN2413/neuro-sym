@@ -1,0 +1,350 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://verilogic-ns.local/schemas/theory.v1.schema.json",
+  "title": "VeriLogic-NS Theory AST v1",
+  "description": "Restricted, non-executable AST for finite open-world theories.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "theory_id",
+    "source_statements",
+    "entities",
+    "predicates",
+    "facts",
+    "rules",
+    "query"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "theory_id": {
+      "$ref": "#/$defs/identifier"
+    },
+    "source_statements": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10000,
+      "items": {
+        "$ref": "#/$defs/sourceStatement"
+      }
+    },
+    "entities": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10000,
+      "items": {
+        "$ref": "#/$defs/entity"
+      }
+    },
+    "predicates": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1000,
+      "items": {
+        "$ref": "#/$defs/predicateDefinition"
+      }
+    },
+    "facts": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "$ref": "#/$defs/groundLiteral"
+      }
+    },
+    "rules": {
+      "type": "array",
+      "maxItems": 10000,
+      "items": {
+        "$ref": "#/$defs/rule"
+      }
+    },
+    "query": {
+      "$ref": "#/$defs/groundLiteral"
+    },
+    "parser_metadata": {
+      "$ref": "#/$defs/parserMetadata"
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+    },
+    "qualifiedIdentifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,127}$"
+    },
+    "predicateName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9_]{0,63}$"
+    },
+    "variableName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Z][A-Za-z0-9_]{0,63}$"
+    },
+    "sourceStatement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "text"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        }
+      }
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "type": {
+          "$ref": "#/$defs/qualifiedIdentifier"
+        }
+      }
+    },
+    "predicateDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "arity"],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/predicateName"
+        },
+        "arity": {
+          "type": "integer",
+          "enum": [1, 2]
+        },
+        "argument_types": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/qualifiedIdentifier"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["arity"],
+            "properties": {
+              "arity": {
+                "const": 1
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "argument_types": {
+                "minItems": 1,
+                "maxItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": ["arity"],
+            "properties": {
+              "arity": {
+                "const": 2
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "argument_types": {
+                "minItems": 2,
+                "maxItems": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "entityTerm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": {
+          "const": "entity"
+        },
+        "id": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "variableTerm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "name"],
+      "properties": {
+        "kind": {
+          "const": "variable"
+        },
+        "name": {
+          "$ref": "#/$defs/variableName"
+        }
+      }
+    },
+    "term": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/entityTerm"
+        },
+        {
+          "$ref": "#/$defs/variableTerm"
+        }
+      ]
+    },
+    "groundLiteral": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["predicate", "arguments", "negated", "source_id"],
+      "properties": {
+        "predicate": {
+          "$ref": "#/$defs/predicateName"
+        },
+        "arguments": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/entityTerm"
+          }
+        },
+        "negated": {
+          "type": "boolean"
+        },
+        "source_id": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "ruleLiteral": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["predicate", "arguments", "negated", "source_id"],
+      "properties": {
+        "predicate": {
+          "$ref": "#/$defs/predicateName"
+        },
+        "arguments": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2,
+          "items": {
+            "$ref": "#/$defs/term"
+          }
+        },
+        "negated": {
+          "type": "boolean"
+        },
+        "source_id": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "variableDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "$ref": "#/$defs/variableName"
+        },
+        "type": {
+          "$ref": "#/$defs/qualifiedIdentifier"
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "variables", "body", "head", "source_id"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "variables": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/variableDefinition"
+          }
+        },
+        "body": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/ruleLiteral"
+          }
+        },
+        "head": {
+          "$ref": "#/$defs/ruleLiteral"
+        },
+        "source_id": {
+          "$ref": "#/$defs/identifier"
+        }
+      }
+    },
+    "parserMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["parser_name", "parser_version"],
+      "properties": {
+        "parser_name": {
+          "$ref": "#/$defs/qualifiedIdentifier"
+        },
+        "parser_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9_.+-]{0,63}$"
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "warnings": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        }
+      }
+    }
+  }
+}
