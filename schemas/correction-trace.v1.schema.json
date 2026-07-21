@@ -1,0 +1,215 @@
+{
+  "$defs": {
+    "AbstentionReason": {
+      "enum": [
+        "INVALID_THEORY",
+        "INCOMPLETE_SOURCE_COVERAGE",
+        "INVALID_QUERY",
+        "CRITIC_REJECTED",
+        "CORRECTION_FAILED",
+        "NO_CORRECTION_PROGRESS",
+        "CORRECTION_LIMIT",
+        "RESOURCE_LIMIT",
+        "UNEXPECTED_INCONSISTENCY",
+        "RELIABILITY_GATE_FAILED"
+      ],
+      "title": "AbstentionReason",
+      "type": "string"
+    },
+    "ComponentType": {
+      "enum": [
+        "theory",
+        "query"
+      ],
+      "title": "ComponentType",
+      "type": "string"
+    },
+    "ControllerState": {
+      "enum": [
+        "RAW",
+        "VALIDATING",
+        "NEEDS_CORRECTION",
+        "CRITIQUING",
+        "CORRECTING",
+        "REVALIDATING",
+        "FINAL_CRITIQUE",
+        "ACCEPTED",
+        "ABSTAINED",
+        "ERROR"
+      ],
+      "title": "ControllerState",
+      "type": "string"
+    },
+    "StateTransition": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_hash": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Candidate Hash"
+        },
+        "event": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Event",
+          "type": "string"
+        },
+        "feedback_hash": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Feedback Hash"
+        },
+        "from_state": {
+          "$ref": "#/$defs/ControllerState"
+        },
+        "request_hash": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Request Hash"
+        },
+        "sequence": {
+          "maximum": 16,
+          "minimum": 1,
+          "title": "Sequence",
+          "type": "integer"
+        },
+        "to_state": {
+          "$ref": "#/$defs/ControllerState"
+        }
+      },
+      "required": [
+        "sequence",
+        "from_state",
+        "to_state",
+        "event"
+      ],
+      "title": "StateTransition",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "abstention_reason": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/AbstentionReason"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "component_type": {
+      "$ref": "#/$defs/ComponentType"
+    },
+    "correction_attempts": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Correction Attempts",
+      "type": "integer"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "error_type": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Error Type"
+    },
+    "final_candidate_hash": {
+      "anyOf": [
+        {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Final Candidate Hash"
+    },
+    "final_state": {
+      "enum": [
+        "ACCEPTED",
+        "ABSTAINED",
+        "ERROR"
+      ],
+      "title": "Final State",
+      "type": "string"
+    },
+    "input_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Input Hash",
+      "type": "string"
+    },
+    "raw_candidate_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Raw Candidate Hash",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "trace_id": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Trace Id",
+      "type": "string"
+    },
+    "transitions": {
+      "items": {
+        "$ref": "#/$defs/StateTransition"
+      },
+      "title": "Transitions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "trace_id",
+    "component_type",
+    "input_hash",
+    "transitions",
+    "raw_candidate_hash",
+    "correction_attempts",
+    "final_state",
+    "created_at"
+  ],
+  "title": "ControllerTrace",
+  "type": "object"
+}

@@ -29,7 +29,7 @@ free-disk policy. Only this one model was downloaded.
 
 ## Frozen runtime identity
 
-- Ollama: `0.31.2`, installed from the official signed Windows distribution
+- Ollama: `0.32.1`, installed from the official signed Windows distribution
 - Endpoint: `http://127.0.0.1:11434`
 - Cloud mode: disabled with `OLLAMA_NO_CLOUD=1`
 - Model tag: `qwen3.5:4b-q4_K_M`
@@ -97,8 +97,8 @@ python -m verilogic_ns_api.baselines run --config experiments/configs/ollama-few
 ```
 
 The direct/few-shot config hashes are respectively
-`04124c480d654cdf0c0e90527035a8f0bf69cf7643df33d233003d595726de9d` and
-`0f815c92b2cce6e58e6bf00fe18077a70ca16eb6cd1d5b2c76cdea5b970c173b`.
+`13b53cb22b7a2f82f0de298771872bfea913dce2fcef93896e655a199392019b` and
+`18a78122765bb603868542e416a610a775cafbabb9ded126d24a37419979bf6e`.
 
 ## Interpretation limits
 

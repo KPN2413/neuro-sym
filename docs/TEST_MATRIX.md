@@ -7,10 +7,12 @@ The matrix grows with the implementation. Every behavior change requires corresp
 | Backend health | Response status and typed payload | readiness/dependency failure paths | `python -m pytest` |
 | Environment settings | Construction exercised by app tests | malformed origins, production policy, precedence | `python -m pytest` |
 | JSON Schema | Schema self-check; all valid fixtures accepted; each invalid fixture rejected for intended reason | version migration and compatibility | `python -m pytest` |
-| Semantic AST validation | Not implemented | IDs, references, exact arity, types, variables, rule safety, meaning preservation | `python -m pytest` |
-| Reasoner | Not implemented | unit rules, multi-step closure, cycles, explicit negation, open world, inconsistency, determinism | `python -m pytest` |
-| Proofs | Not implemented | replay, source completeness, polarity, alternate derivations, tampering rejection | `python -m pytest` |
-| Parser boundary | Not implemented | provider mocks, malformed JSON, unknown fields, timeout, confidence gate, correction limits | `python -m pytest` |
+| Semantic AST validation | IDs/references, arity, types, declared terms, ground facts/query, safe heads | source-meaning preservation remains Phase 5/6 | `python -m pytest` |
+| Reasoner | unary/binary, joins, constants, shared variables, conjunction, chains, cycles, explicit negation, OWA, inconsistency, no contraposition, determinism, limits | performance regression at larger final scale | `python -m pytest` |
+| Proofs | canonical selection/hashes, exact sources/rules/substitutions, independent closure replay, graph integrity, tampering and fabricated-unknown rejection | final proof metrics/dashboard integration | `python -m pytest` |
+| ProofWriter formal conformance | deterministic S-expression adapter, same-30 check, balanced 300-example OWA development ceiling, independent verification | no test split until final frozen protocol | explicit local reasoning CLI |
+| Parser boundary | Gold-free views, theory/query schemas, strict local endpoint/model, malformed/extra output, source coverage, semantic validation, cache/replay, alpha canonicalization, no-thinking/no-gold tests | confidence gate and correction limits remain Phase 6 | `python -m pytest` |
+| Correction controller | Typed state transitions, one-attempt bound, stable feedback/hashes, critic/correction schema failures, no-progress, gold isolation, abstention/error/unknown separation, cache identity/replay, and P0 compatibility | larger final-scale selective-risk evaluation remains Phase 9 | `python -m pytest` |
 | Dataset acquisition | mocked success, interruption, timeout, HTTP errors, size/checksum/ZIP failure, idempotence, force, traversal, symlink, cleanup | real-source availability regression and operational monitoring | `python -m pytest` |
 | Dataset ingestion | OWA mapping, CWA refusal, malformed/missing/duplicate records, stable IDs, proof preservation, ZIP/directory streaming, official splits | further official variants and future format versions | `python -m pytest` |
 | Sampling/leakage | seeds, filters, balanced/stratified sampling, impossible requests, test guard, IDs/questions/content/theory overlap | scale/performance and approved perturbation pairing | `python -m pytest` |
@@ -35,7 +37,7 @@ The matrix grows with the implementation. Every behavior change requires corresp
 
 ## Mandatory failure paths
 
-Tests must cover malformed JSON, unknown fields, unsupported arity and operators, unsafe identifiers, dangling sources, undeclared terms, unsafe rules, contradictory polarities, provider timeouts, correction exhaustion, low confidence, empty theories, resource bounds, and proof tampering as soon as the corresponding feature exists.
+Tests must cover malformed JSON, unknown fields, unsupported arity and operators, unsafe identifiers, dangling sources, undeclared terms, unsafe rules, contradictory polarities, provider timeouts, correction exhaustion, critic rejection, repeated/no-progress candidates, deliberate abstention, empty theories, resource bounds, and proof tampering as soon as the corresponding feature exists.
 
 ## Quality gates
 

@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "theory_id": "multiple_derivations",
+  "source_statements": [
+    {"id": "s1", "text": "Alice is bright."},
+    {"id": "s2", "text": "Alice is kind."},
+    {"id": "s3", "text": "Bright implies helpful."},
+    {"id": "s4", "text": "Kind implies helpful."},
+    {"id": "q1", "text": "Is Alice helpful?"}
+  ],
+  "entities": [{"id": "alice", "label": "Alice"}],
+  "predicates": [
+    {"name": "bright", "arity": 1},
+    {"name": "kind", "arity": 1},
+    {"name": "helpful", "arity": 1}
+  ],
+  "facts": [
+    {"predicate": "bright", "arguments": [{"kind": "entity", "id": "alice"}], "negated": false, "source_id": "s1"},
+    {"predicate": "kind", "arguments": [{"kind": "entity", "id": "alice"}], "negated": false, "source_id": "s2"}
+  ],
+  "rules": [
+    {
+      "id": "r1", "variables": [{"name": "X"}],
+      "body": [{"predicate": "bright", "arguments": [{"kind": "variable", "name": "X"}], "negated": false, "source_id": "s3"}],
+      "head": {"predicate": "helpful", "arguments": [{"kind": "variable", "name": "X"}], "negated": false, "source_id": "s3"}, "source_id": "s3"
+    },
+    {
+      "id": "r2", "variables": [{"name": "X"}],
+      "body": [{"predicate": "kind", "arguments": [{"kind": "variable", "name": "X"}], "negated": false, "source_id": "s4"}],
+      "head": {"predicate": "helpful", "arguments": [{"kind": "variable", "name": "X"}], "negated": false, "source_id": "s4"}, "source_id": "s4"
+    }
+  ],
+  "query": {"predicate": "helpful", "arguments": [{"kind": "entity", "id": "alice"}], "negated": false, "source_id": "q1"}
+}

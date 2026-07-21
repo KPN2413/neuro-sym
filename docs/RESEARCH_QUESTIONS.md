@@ -46,3 +46,17 @@ Confidence intervals and paired comparisons will be selected in `EXPERIMENT_PROT
 ## Threats to validity
 
 Key risks include benchmark contamination, semantic-parser meaning drift, prompt sensitivity, provider nondeterminism, unequal information across conditions, cost-price changes, incomplete proof scoring, and conclusions that do not generalize beyond the benchmark fragment. Logical correctness relative to premises must never be presented as factual-world verification.
+
+## Phase 6 pre-registered questions and hypotheses
+
+These questions and directional hypotheses were frozen after synthetic/train-only calibration and
+before the Phase 6 development pilot was inspected. They are research expectations, not acceptance
+criteria, and null or negative findings must be retained.
+
+- **RQ6.1:** Can deterministic validator feedback improve neural semantic-parser validity?
+- **RQ6.2:** Can a semantic critic detect meaning mismatches that structural validation misses?
+- **RQ6.3:** Can correction increase end-to-end coverage without reducing answered-only reliability?
+- **RQ6.4:** Can abstention prevent invalid or semantically doubtful parses from becoming confident logical answers?
+- **H6.1:** Validation-guided correction will increase complete AST acceptance above Phase 5's 13.33% rate.
+- **H6.2:** The corrected pipeline will improve end-to-end coverage relative to Phase 5.
+- **H6.3:** Selective abstention will have equal or higher answered-only accuracy than answering every deterministically valid corrected output.

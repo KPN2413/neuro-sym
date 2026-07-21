@@ -1,0 +1,302 @@
+{
+  "$defs": {
+    "CanonicalLiteral": {
+      "additionalProperties": false,
+      "properties": {
+        "arguments": {
+          "items": {
+            "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+            "type": "string"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Arguments",
+          "type": "array"
+        },
+        "negated": {
+          "title": "Negated",
+          "type": "boolean"
+        },
+        "predicate": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Predicate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "predicate",
+        "arguments",
+        "negated"
+      ],
+      "title": "CanonicalLiteral",
+      "type": "object"
+    },
+    "DerivedLiteralNode": {
+      "additionalProperties": false,
+      "properties": {
+        "depth": {
+          "minimum": 1,
+          "title": "Depth",
+          "type": "integer"
+        },
+        "literal": {
+          "$ref": "#/$defs/CanonicalLiteral"
+        },
+        "node_id": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "node_type": {
+          "const": "derived_literal",
+          "default": "derived_literal",
+          "title": "Node Type",
+          "type": "string"
+        },
+        "rule_application_node_id": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Rule Application Node Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "literal",
+        "rule_application_node_id",
+        "depth"
+      ],
+      "title": "DerivedLiteralNode",
+      "type": "object"
+    },
+    "ReasoningStatus": {
+      "enum": [
+        "ENTAILED",
+        "CONTRADICTED",
+        "UNKNOWN",
+        "INCONSISTENT"
+      ],
+      "title": "ReasoningStatus",
+      "type": "string"
+    },
+    "RuleApplicationNode": {
+      "additionalProperties": false,
+      "properties": {
+        "conclusion": {
+          "$ref": "#/$defs/CanonicalLiteral"
+        },
+        "depth": {
+          "minimum": 1,
+          "title": "Depth",
+          "type": "integer"
+        },
+        "node_id": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "node_type": {
+          "const": "rule_application",
+          "default": "rule_application",
+          "title": "Node Type",
+          "type": "string"
+        },
+        "premise_node_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "title": "Premise Node Ids",
+          "type": "array"
+        },
+        "rule_id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "source_id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_text": {
+          "maxLength": 10000,
+          "minLength": 1,
+          "title": "Source Text",
+          "type": "string"
+        },
+        "substitution": {
+          "items": {
+            "$ref": "#/$defs/SubstitutionBinding"
+          },
+          "maxItems": 64,
+          "title": "Substitution",
+          "type": "array"
+        }
+      },
+      "required": [
+        "node_id",
+        "rule_id",
+        "source_id",
+        "source_text",
+        "substitution",
+        "premise_node_ids",
+        "conclusion",
+        "depth"
+      ],
+      "title": "RuleApplicationNode",
+      "type": "object"
+    },
+    "SourceFactNode": {
+      "additionalProperties": false,
+      "properties": {
+        "depth": {
+          "const": 0,
+          "default": 0,
+          "title": "Depth",
+          "type": "integer"
+        },
+        "literal": {
+          "$ref": "#/$defs/CanonicalLiteral"
+        },
+        "node_id": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Node Id",
+          "type": "string"
+        },
+        "node_type": {
+          "const": "source_fact",
+          "default": "source_fact",
+          "title": "Node Type",
+          "type": "string"
+        },
+        "source_id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+          "title": "Source Id",
+          "type": "string"
+        },
+        "source_text": {
+          "maxLength": 10000,
+          "minLength": 1,
+          "title": "Source Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_id",
+        "literal",
+        "source_id",
+        "source_text"
+      ],
+      "title": "SourceFactNode",
+      "type": "object"
+    },
+    "SubstitutionBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "entity": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+          "title": "Entity",
+          "type": "string"
+        },
+        "variable": {
+          "pattern": "^[A-Z][A-Za-z0-9_]{0,63}$",
+          "title": "Variable",
+          "type": "string"
+        }
+      },
+      "required": [
+        "variable",
+        "entity"
+      ],
+      "title": "SubstitutionBinding",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "nodes": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "derived_literal": "#/$defs/DerivedLiteralNode",
+            "rule_application": "#/$defs/RuleApplicationNode",
+            "source_fact": "#/$defs/SourceFactNode"
+          },
+          "propertyName": "node_type"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/SourceFactNode"
+          },
+          {
+            "$ref": "#/$defs/RuleApplicationNode"
+          },
+          {
+            "$ref": "#/$defs/DerivedLiteralNode"
+          }
+        ]
+      },
+      "maxItems": 100000,
+      "title": "Nodes",
+      "type": "array"
+    },
+    "opposition_root_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Opposition Root Id"
+    },
+    "proof_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Proof Hash",
+      "type": "string"
+    },
+    "query": {
+      "$ref": "#/$defs/CanonicalLiteral"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/ReasoningStatus"
+    },
+    "support_root_id": {
+      "anyOf": [
+        {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Support Root Id"
+    },
+    "theory_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Theory Hash",
+      "type": "string"
+    }
+  },
+  "required": [
+    "theory_hash",
+    "query",
+    "status",
+    "nodes",
+    "proof_hash"
+  ],
+  "title": "ProofDAG",
+  "type": "object"
+}

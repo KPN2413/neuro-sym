@@ -2,7 +2,7 @@
 
 ## Trust model
 
-Treat user input, benchmark files, natural-language text, LLM responses, provider metadata, imported JSONL, and future proof payloads as untrusted. Only a structurally and semantically validated, supported AST may reach deterministic reasoning.
+Treat user input, benchmark files, natural-language text, LLM responses, provider metadata, imported JSONL, and proof payloads as untrusted. Only a structurally and semantically validated, supported AST may reach deterministic reasoning.
 
 ## Non-execution rule
 
@@ -15,8 +15,9 @@ Never execute model-generated or dataset-supplied Python, JavaScript, shell, SQL
 - Reject unknown properties, unsafe identifiers, unsupported operators, malformed arity, unresolved references, type mismatches, and unsafe variables.
 - Validate source links and meaning preservation before reasoning.
 - Bound and audit correction attempts; correction cannot invent or reverse meaning.
-- Abstain or return an internal invalid state on ambiguity, low confidence, timeout, or validator disagreement.
-- Detect both-polarity derivations as internal inconsistency instead of choosing one.
+- Abstain or return an internal invalid state on parser ambiguity, low confidence, or validator disagreement. A symbolic resource limit is a typed failure, never `UNKNOWN`.
+- Detect both-polarity query derivations as `INCONSISTENT` instead of choosing one; unrelated conflicts do not trigger explosive inference.
+- Verify proof hashes, exact sources, substitutions, references, reachability, and acyclicity before trusting a supplied proof. Independently recompute closure status rather than trusting an empty or producer-authored proof.
 
 ## Secrets and privacy
 
@@ -51,9 +52,20 @@ Do not fabricate outputs, proofs, metrics, prices, or benchmark records. Preserv
 - Pass only gold-redacted inputs to predictors and never write gold labels into prediction JSONL.
 - Do not record environment-variable values or secrets in run manifests.
 - Send only gold-free `PredictionInput` context/query data. Never send evaluation labels, gold proofs, test records, host paths, or credentials.
+- Phase 5 semantic-parser prompts accept only dedicated neutral theory/query views; never pass
+  `BenchmarkExample`, formal representations, reasoning depth, raw source keys, or gold-bearing
+  predictor views to the parser renderer.
+- Local Ollama inference must use loopback port 11434, an exact tag/digest/version, `think: false`,
+  and no cloud model tag, proxy, credentials, tools, browsing, or external resource.
+- Phase 6 critic/correction inputs are dedicated gold-free models, not filtered benchmark records.
+  Treat source text, candidates, feedback, critic issues, and cached responses as untrusted data.
+  Bound request/feedback/output sizes and transport retries; permit one semantic correction only;
+  reject unknown source IDs, repeated/no-progress candidates, and invalid cache metadata.
 - Treat benchmark instructions as inert data inside explicit delimiters; request no chain-of-thought, rationale, tools, or browsing.
 - Keep raw provider responses in ignored, content-addressed local cache files. Validate request metadata before reuse and quarantine corrupt entries.
 - Retry only transient transport/rate/server failures. Authentication, permission, model, request, and schema failures abort without retry or silent fallback.
+- Constrain reasoning output paths beneath the current working directory, write atomically, and refuse replacement unless explicitly forced.
+- Bound closure size, rule instances, rounds, proof nodes, and optional execution time. Never present a partial closure as complete.
 
 ## Review checklist
 

@@ -8,24 +8,29 @@ VeriLogic-NS has two trust domains. Natural language, dataset records, provider 
 Natural-language theory + query
         |
         v
-Provider-independent semantic-parser adapter (future)
+Gold-isolated local semantic-parser adapter (Phase 5)
         |
         v
 Restricted JSON AST -> structural validator -> semantic validator
         |                                      |
-        | invalid/uncertain                    | approved limited correction (future)
+        | invalid/uncertain                    | valid raw candidate
         v                                      v
-Fail-closed INVALID/abstain             confidence gate
+Typed feedback -> one local correction     semantic critic
+        |                                      |
+        +------------> full revalidation <-----+
+                              |
+                              v
+                    evidence gate / abstain
                                                 |
                                                 v
-                               deterministic forward-chaining engine (future)
+                               deterministic forward-chaining engine
                                                 |
                                                 v
-                       ENTAILED / CONTRADICTED / UNKNOWN
+                ENTAILED / CONTRADICTED / UNKNOWN / INCONSISTENT
                               + source-linked proof or explanation
 ```
 
-Phases 1–3 implement the contracts, service/UI shells, ProofWriter ingestion, deterministic sampling/leakage reporting, evaluation harness, and direct/few-shot LLM baseline infrastructure. They do not implement a semantic parser, symbolic solver, semantic AST validator, correction loop, or research dashboard.
+Phases 1-6 implement the contracts, service/UI shells, ProofWriter ingestion, deterministic sampling/leakage reporting, evaluation harness, direct/few-shot LLM baseline infrastructure, a gold-isolated local semantic parser, a bounded local critic/correction controller, semantic theory validation, the symbolic solver, and proof replay. They do not implement a production end-to-end API or research dashboard.
 
 ## Components
 
@@ -39,15 +44,29 @@ Phases 1–3 implement the contracts, service/UI shells, ProofWriter ingestion, 
 
 ### Semantic parser port
 
-A future provider-independent interface will accept versioned prompts and natural language and return untrusted JSON candidates plus allowed metadata. Provider output never reaches the reasoner directly and no generated code is executed.
+`verilogic_ns_api.semantic_parsing` accepts dedicated gold-free theory/query views and returns
+untrusted schema-constrained candidates. The Phase 5 provider is loopback-only Ollama pinned by tag,
+digest, and version. Neutral `sentN` IDs prevent ProofWriter formal keys from entering prompts;
+internal mappings restore provenance only after inference. Source coverage and the complete Phase 4
+AST validator must pass before reasoning. Parser failures become typed evaluation errors, never
+`UNKNOWN`, and no generated code is executed.
 
 ### Validation boundary
 
-The JSON Schema provides structural validation: known fields, identifier patterns, literal shape, arity bounds, source fields, and version. Future semantic validation will enforce cross-object constraints such as declared-predicate arity, reference existence, variable safety, type compatibility, and source-ID integrity. Any unresolved error fails closed.
+The JSON Schema provides structural validation: known fields, identifier patterns, literal shape, arity bounds, source fields, and version. Phase 4 strict Pydantic models enforce cross-object constraints such as declared-predicate arity, reference existence, variable safety, type compatibility, and source-ID integrity. Any unresolved error fails closed. Natural-language meaning preservation remains Phase 5/6 work.
+
+### Validation/correction controller
+
+`verilogic_ns_api.validation_correction` turns Phase 5 validation outcomes into stable typed feedback,
+applies a separate local fidelity critic, and permits one schema-constrained replacement per
+theory/query. Corrected candidates cross the complete validation boundary again. P1 releases every
+deterministically valid, independently verified result for diagnostic comparison; P2 additionally
+requires critic acceptance. State transitions, hashes, decisions, abstention reasons, and aggregate
+telemetry are immutable and replayable without storing chain-of-thought.
 
 ### Symbolic engine
 
-A future Datalog-style engine will ground safe conjunctive rules and apply deterministic forward chaining to a fixed point. Positive and explicitly negative literals are separate atoms. The engine will maintain derivation provenance and detect when both polarities are derivable.
+`verilogic_ns_api.reasoning` grounds safe conjunctive rules and applies deterministic delta-based forward chaining to a fixed point. Positive and explicitly negative literals are separate signed atoms. Canonical derivations preserve source provenance; a separately implemented naive closure validates proof status. Configurable limits prevent partial computations from being mislabeled as complete.
 
 ### Experiment harness
 
@@ -68,12 +87,12 @@ Network bytes are streamed to an ignored `.part` file with configured timeouts a
 - `ENTAILED`: the query literal is derivable and its explicit opposite is not.
 - `CONTRADICTED`: the explicit opposite is derivable and the query is not.
 - `UNKNOWN`: neither polarity is derivable under open-world semantics.
-- `INCONSISTENT`: both polarities are derivable; this is an internal safety state and must not be collapsed into a supported answer.
+- `INCONSISTENT`: both polarities are derivable for the query; unrelated conflicts remain telemetry and do not cause explosion.
 - `INVALID`: the input cannot safely cross the validation boundary.
 
 ## Proof architecture
 
-Every asserted fact and rule has a `source_id`. A future proof node will identify the derived literal, the supporting fact or rule, antecedent proof nodes, and source IDs. Proof verification must replay against the normalized AST rather than trust provider prose.
+Every asserted fact and rule has a `source_id`. The versioned proof DAG contains exact source facts, grounded rule applications, antecedent roots, source text, signed conclusions, depths, and canonical hashes. The independent verifier checks graph integrity and replays the claimed status against a naive closure rather than trusting producer output or provider prose.
 
 ## Deployment boundaries
 

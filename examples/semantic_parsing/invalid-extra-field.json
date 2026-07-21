@@ -1,0 +1,9 @@
+{
+  "query": {
+    "predicate": "kind",
+    "arity": 1,
+    "arguments": [{"kind": "entity", "id": "dog"}],
+    "negated": false
+  },
+  "gold_label": "ENTAILED"
+}

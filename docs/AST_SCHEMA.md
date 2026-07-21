@@ -34,11 +34,11 @@ Facts and queries accept only entity terms. Rule body and head literals may use 
 
 ## Source integrity
 
-Every fact, rule, rule-body literal, rule-head literal, and query requires a `source_id`. The schema ensures the field is present and syntactically safe. JSON Schema cannot portably enforce that an arbitrary source ID appears in the root array, so the future semantic validator must check referential integrity and reject dangling references.
+Every fact, rule, rule-body literal, rule-head literal, and query requires a `source_id`. The schema ensures the field is present and syntactically safe. JSON Schema cannot portably enforce that an arbitrary source ID appears in the root array, so the Phase 4 `Theory` semantic validator checks referential integrity and rejects dangling references.
 
 ## Structural versus semantic validation
 
-The schema enforces supported shapes, fixed operators, allowed fields, basic arity bounds, and identifier safety. Semantic validation must additionally enforce:
+The schema enforces supported shapes, fixed operators, allowed fields, basic arity bounds, and identifier safety. The Phase 4 semantic validator additionally enforces:
 
 - uniqueness and existence of all IDs and references;
 - declared predicate existence and exact arity consistency;
@@ -53,9 +53,13 @@ Passing the JSON Schema alone never authorizes reasoning when semantic validatio
 
 ## Fixtures
 
-Valid examples are in `examples/theories/entailed.json`, `contradicted.json`, and `unknown.json`. They demonstrate the three public outcomes conceptually but Phase 1 does not execute a reasoner. Intentionally invalid fixtures cover an argument list outside supported arity, a missing source-link field, an unsafe identifier, and an unsupported executable-code property.
+Valid examples in `examples/theories/` now cover four-way classification, unary multi-step reasoning, binary joins, explicit negative premises, recursion, and multiple derivations. Intentionally invalid fixtures cover structural failures plus semantic failures such as unbound head variables, predicate-arity conflicts, non-ground facts, and dangling source references.
 
-Backend tests load the schema with a Draft 2020-12 validator, require every valid fixture to pass, and require every invalid fixture to fail for its intended structural reason.
+Backend tests load the schema with a Draft 2020-12 validator, require every valid fixture to pass, require structural-invalid fixtures to fail for their intended schema reason, and require semantic-invalid fixtures to fail strict typed validation before reasoning.
+
+## Phase 4 proof contracts
+
+`schemas/proof.v1.schema.json` and `schemas/reasoning-result.v1.schema.json` are generated from strict Pydantic models and compared byte-for-byte in tests. They define canonical source-fact, rule-application, and derived-literal nodes; signed support/opposition roots; theory/proof hashes; four-way result status; conflicts; and resource telemetry. See `docs/PROOF_FORMAT.md`.
 
 ## Versioning
 

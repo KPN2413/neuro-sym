@@ -1,0 +1,33 @@
+schema_version: "1.0"
+name: ollama-semantic-parser-pilot
+dataset_version: V2020.12.3
+data_source: datasets/proofwriter/raw/archives/proofwriter-dataset-V2020.12.3.zip
+variant: depth-5
+archive_sha256: bbc5694901e8306d0bd659aa1ad53ccfd02c201864f4b320ffa3777827d1fc26
+pilot_manifest: experiments/manifests/proofwriter-owa-depth5-dev-pilot.v1.json
+pilot_manifest_sha256: 16fd49a90f77aa7b59c1b55a62fa1846638beb7a3c86ea07ff97a685d76360b3
+calibration_manifest: experiments/manifests/proofwriter-owa-depth5-train-demos.v1.json
+calibration_manifest_sha256: 58d5d64f81d9b3ba6595774b95b139632b9d62aaee359cbd21d9845394ba0df0
+theory_prompt: prompts/semantic_parsing/theory/v1.md
+theory_prompt_sha256: b4be4c4d028b4cf954cdf367cd01be21e354aa164e215d77f567f860e759e54f
+query_prompt: prompts/semantic_parsing/query/v1.md
+query_prompt_sha256: eb11a6764cfbb8f98bc5bfd8adf8e999e4544d823d7129b0ea6f1e4b45cbf874
+theory_schema_sha256: 3ec7689a1e879cfcf6d3d004e147fb36327eda286fd9b929f445d9a488cf4d1f
+query_schema_sha256: 33f25d5e0eaf5f12b2830b8d69b0505330a31685249d5a5353a041e1d556bf91
+cache_directory: results/cache/semantic-parser
+output_directory: results/semantic-parsing
+runtime:
+  provider: ollama
+  endpoint: http://127.0.0.1:11434
+  provider_version: 0.32.1
+  model: qwen3.5:4b-q4_K_M
+  model_digest: 2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd
+  temperature: 0
+  seed: 20260713
+  num_ctx: 8192
+  theory_num_predict: 4096
+  query_num_predict: 256
+  think: false
+  keep_alive: 30m
+  timeout_seconds: 900
+  max_attempts: 2

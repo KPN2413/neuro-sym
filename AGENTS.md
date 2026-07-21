@@ -66,6 +66,15 @@ python -m verilogic_ns_api.baselines --help
 python -m verilogic_ns_api.baselines smoke --condition direct
 python -m verilogic_ns_api.baselines smoke --condition few_shot
 python -m verilogic_ns_api.baselines plan --config experiments/configs/openai-direct-pilot.yaml
+python -m verilogic_ns_api.reasoning --help
+python -m verilogic_ns_api.reasoning reason --input examples/theories/entailed.json --human
+python -m verilogic_ns_api.reasoning verify-proof --theory <theory.json> --proof <result.json>
+python -m verilogic_ns_api.semantic_parsing --help
+python -m verilogic_ns_api.semantic_parsing plan --config experiments/configs/ollama-semantic-parser-pilot.yaml
+python -m verilogic_ns_api.semantic_parsing replay --config experiments/configs/ollama-semantic-parser-pilot.yaml --dataset pilot --run-id <unique-id>
+python -m verilogic_ns_api.validation_correction --help
+python -m verilogic_ns_api.validation_correction plan --config experiments/configs/ollama-validation-correction-pilot.yaml
+python -m verilogic_ns_api.validation_correction replay --config experiments/configs/ollama-validation-correction-pilot.yaml --run-id <unique-id>
 ```
 
 Dataset download, extraction, preparation, samples, and evaluation outputs are local generated artifacts and must remain ignored. Track only acquisition/normalization code, schemas, documentation, safe aggregate provenance, configurations, and small explicitly synthetic fixtures.
@@ -83,6 +92,20 @@ docker compose up --build
 - Stream dataset downloads to partial files, enforce limits/timeouts/checksums, validate ZIPs before rename, and reject traversal or symbolic-link entries during extraction.
 - Never execute model-generated Python, JavaScript, Prolog, SQL, shell, templates, or other code.
 - The versioned typed AST is the only boundary between language parsing and symbolic reasoning. Do not bypass it with provider-specific payloads or free-form expressions.
+- The Phase 4 engine is deterministic and LLM-free. Preserve least-fixpoint forward chaining,
+  explicit-negation/open-world semantics, no contraposition, query-specific paraconsistency,
+  canonical proof selection, and independent proof replay.
+- A resource limit is a typed failure, never `UNKNOWN`; an invalid or tampered proof is never a
+  successful result.
+- Phase 5 parser requests must use dedicated gold-free theory/query views, neutral source IDs,
+  loopback-only Ollama, the exact model digest/version, and `think: false`. Never render formal fields,
+  labels, proofs, depth, record paths, or raw dataset keys.
+- Phase 5 is a no-correction baseline. Parser failures are typed `ERROR` outcomes, never `UNKNOWN`;
+  do not add repair, voting, reflection, solver feedback, or confidence gating before Phase 6.
+- Phase 6 reuses Phase 5 raw cache entries read-only, permits at most one semantic replacement per
+  theory/query, and requires typed feedback, full revalidation, and immutable controller traces.
+  The selective policy requires critic acceptance and independent reasoning verification. Preserve
+  `UNKNOWN`, `ABSTAIN`, `ERROR`, and `INCONSISTENT` as distinct meanings.
 - Reject unknown fields, unsafe identifiers, unsupported operators, missing source links, arity errors, type errors, and unsafe rules.
 - Fail closed. If parsing, validation, correction, confidence gating, or consistency checks are uncertain, return or record an abstention/invalid state rather than guessing.
 - Limit correction to typed, auditable transformations; never silently change premise meaning.
@@ -110,7 +133,7 @@ docker compose up --build
 
 At minimum, run the checks affected by a change. Before declaring a phase complete, run the full applicable suite: Ruff lint and format check, pytest, schema fixture validation, dataset/evaluation CLI help, synthetic inspection and smoke evaluation, frontend lint, frontend type-check, frontend production build, and Docker configuration validation when Docker is available. Dataset changes require mocked acquisition failures, archive-safety tests, label-mapping tests, split/leakage tests, and atomic-output tests. Future reasoning changes also require unit, integration, proof-integrity, and property-based tests. Security boundaries require negative tests.
 
-Tests must be deterministic by default. Record seeds for randomized experiments and mock paid or external services in routine tests. A test may not assert a result that was not produced by the implementation.
+Tests must be deterministic by default. Record seeds for randomized experiments and mock paid or external services in routine tests. A test may not assert a result that was not produced by the implementation. Reasoning changes must keep production and independent reference closure behavior aligned, verify produced proofs, reject tampered proofs, and preserve property-based invariants.
 
 ## Definition of done
 

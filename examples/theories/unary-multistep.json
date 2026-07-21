@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "theory_id": "unary_multistep",
+  "source_statements": [
+    {"id": "s1", "text": "Alice is kind."},
+    {"id": "s2", "text": "Every kind entity is calm."},
+    {"id": "s3", "text": "Every calm entity is trusted."},
+    {"id": "q1", "text": "Is Alice trusted?"}
+  ],
+  "entities": [{"id": "alice", "label": "Alice"}],
+  "predicates": [
+    {"name": "kind", "arity": 1},
+    {"name": "calm", "arity": 1},
+    {"name": "trusted", "arity": 1}
+  ],
+  "facts": [
+    {
+      "predicate": "kind",
+      "arguments": [{"kind": "entity", "id": "alice"}],
+      "negated": false,
+      "source_id": "s1"
+    }
+  ],
+  "rules": [
+    {
+      "id": "r1",
+      "variables": [{"name": "X"}],
+      "body": [{"predicate": "kind", "arguments": [{"kind": "variable", "name": "X"}], "negated": false, "source_id": "s2"}],
+      "head": {"predicate": "calm", "arguments": [{"kind": "variable", "name": "X"}], "negated": false, "source_id": "s2"},
+      "source_id": "s2"
+    },
+    {
+      "id": "r2",
+      "variables": [{"name": "X"}],
+      "body": [{"predicate": "calm", "arguments": [{"kind": "variable", "name": "X"}], "negated": false, "source_id": "s3"}],
+      "head": {"predicate": "trusted", "arguments": [{"kind": "variable", "name": "X"}], "negated": false, "source_id": "s3"},
+      "source_id": "s3"
+    }
+  ],
+  "query": {
+    "predicate": "trusted",
+    "arguments": [{"kind": "entity", "id": "alice"}],
+    "negated": false,
+    "source_id": "q1"
+  }
+}

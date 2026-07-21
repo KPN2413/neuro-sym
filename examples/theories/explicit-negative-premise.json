@@ -1,0 +1,24 @@
+{
+  "schema_version": "1.0",
+  "theory_id": "explicit_negative_premise",
+  "source_statements": [
+    {"id": "s1", "text": "Alice is not blue."},
+    {"id": "s2", "text": "Anything explicitly not blue is visible."},
+    {"id": "q1", "text": "Is Alice visible?"}
+  ],
+  "entities": [{"id": "alice", "label": "Alice"}],
+  "predicates": [{"name": "blue", "arity": 1}, {"name": "visible", "arity": 1}],
+  "facts": [
+    {"predicate": "blue", "arguments": [{"kind": "entity", "id": "alice"}], "negated": true, "source_id": "s1"}
+  ],
+  "rules": [
+    {
+      "id": "r1",
+      "variables": [{"name": "X"}],
+      "body": [{"predicate": "blue", "arguments": [{"kind": "variable", "name": "X"}], "negated": true, "source_id": "s2"}],
+      "head": {"predicate": "visible", "arguments": [{"kind": "variable", "name": "X"}], "negated": false, "source_id": "s2"},
+      "source_id": "s2"
+    }
+  ],
+  "query": {"predicate": "visible", "arguments": [{"kind": "entity", "id": "alice"}], "negated": false, "source_id": "q1"}
+}

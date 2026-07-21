@@ -1,0 +1,134 @@
+{
+  "$defs": {
+    "ComponentType": {
+      "enum": [
+        "theory",
+        "query"
+      ],
+      "title": "ComponentType",
+      "type": "string"
+    },
+    "FeedbackIssueCode": {
+      "enum": [
+        "STRUCTURED_OUTPUT_ERROR",
+        "MISSING_SOURCE",
+        "DUPLICATE_SOURCE",
+        "UNKNOWN_SOURCE",
+        "INVENTED_SOURCE",
+        "FACT_RULE_CONFUSION",
+        "UNSAFE_VARIABLE",
+        "UNBOUND_HEAD_VARIABLE",
+        "NON_GROUND_FACT",
+        "NON_GROUND_QUERY",
+        "UNSUPPORTED_ARITY",
+        "PREDICATE_ARITY_CONFLICT",
+        "INVALID_IDENTIFIER",
+        "INVALID_POLARITY",
+        "INVALID_TERM",
+        "MALFORMED_RULE_BODY",
+        "MALFORMED_RULE_HEAD",
+        "UNSUPPORTED_STRUCTURE"
+      ],
+      "title": "FeedbackIssueCode",
+      "type": "string"
+    },
+    "IssueSeverity": {
+      "enum": [
+        "ERROR",
+        "WARNING"
+      ],
+      "title": "IssueSeverity",
+      "type": "string"
+    },
+    "ValidationIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "ast_path": {
+          "maxLength": 160,
+          "minLength": 1,
+          "title": "Ast Path",
+          "type": "string"
+        },
+        "description": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "issue_code": {
+          "$ref": "#/$defs/FeedbackIssueCode"
+        },
+        "related_issue_ids": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Related Issue Ids",
+          "type": "array"
+        },
+        "retryable": {
+          "title": "Retryable",
+          "type": "boolean"
+        },
+        "severity": {
+          "$ref": "#/$defs/IssueSeverity",
+          "default": "ERROR"
+        },
+        "source_id": {
+          "anyOf": [
+            {
+              "pattern": "^(sent[1-9][0-9]*|query)$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Id"
+        }
+      },
+      "required": [
+        "issue_code",
+        "ast_path",
+        "description",
+        "retryable"
+      ],
+      "title": "ValidationIssue",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "candidate_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Candidate Hash",
+      "type": "string"
+    },
+    "component_type": {
+      "$ref": "#/$defs/ComponentType"
+    },
+    "feedback_schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Feedback Schema Version",
+      "type": "string"
+    },
+    "issues": {
+      "items": {
+        "$ref": "#/$defs/ValidationIssue"
+      },
+      "maxItems": 64,
+      "title": "Issues",
+      "type": "array"
+    }
+  },
+  "required": [
+    "component_type",
+    "candidate_hash",
+    "issues"
+  ],
+  "title": "ValidationFeedback",
+  "type": "object"
+}

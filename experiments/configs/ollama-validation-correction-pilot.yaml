@@ -1,0 +1,54 @@
+schema_version: "1.0"
+name: ollama-validation-correction-pilot
+phase5_config: experiments/configs/ollama-semantic-parser-pilot.yaml
+phase5_config_sha256: 30e20a37f602dbbb259696a57d715b9d2cf43e57a1b7ab95d28dda7c036808e3
+critic_theory_prompt: prompts/semantic_critic/theory/v1.md
+critic_theory_prompt_sha256: 8d47fa74cde03606fa31a415b41eb90281281aaa83e290c1d2916747d00e862f
+critic_query_prompt: prompts/semantic_critic/query/v1.md
+critic_query_prompt_sha256: 74c4ccffeb83d1933cd148008dfddc6e4beb4dd318ec961dcd0e768ed7941549
+correction_theory_prompt: prompts/semantic_correction/theory/v1.md
+correction_theory_prompt_sha256: 0d4df8971944f1bfeb607f011a1fc84557fbc3429d56057f6bc5b1a2db1d4eea
+correction_query_prompt: prompts/semantic_correction/query/v1.md
+correction_query_prompt_sha256: 6a08824fb61fcb6981ea08a35358bbcb17a37108a9c973b59204627554f409ad
+feedback_schema_sha256: 64a3dba0d2db467c38d3970598efe917408f71226b20cecb7890bd8d5898ea6e
+critic_theory_schema_sha256: f0bb25b63817320e2da79992b771af8ab3913775ac38932352846807055b09fb
+critic_query_schema_sha256: 3a1d562bd9084cfa51e15345dfc97c4756b3154cab9db348b753e33a75d1fa30
+correction_theory_schema_sha256: 3ec7689a1e879cfcf6d3d004e147fb36327eda286fd9b929f445d9a488cf4d1f
+correction_query_schema_sha256: 33f25d5e0eaf5f12b2830b8d69b0505330a31685249d5a5353a041e1d556bf91
+calibration_manifest: experiments/manifests/phase6-calibration.v1.json
+calibration_manifest_sha256: 623d9f903e050e12053a268ed779325bc989d1d0d2d9944f0aa7939defd738b8
+cache_directory: results/cache/validation-correction
+output_directory: results/validation-correction
+runtime:
+  provider: ollama
+  endpoint: http://127.0.0.1:11434
+  provider_version: 0.32.1
+  model: qwen3.5:4b-q4_K_M
+  model_digest: 2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd
+  temperature: 0
+  seed: 20260713
+  num_ctx: 8192
+  theory_num_predict: 4096
+  query_num_predict: 256
+  think: false
+  keep_alive: 30m
+  timeout_seconds: 900
+  max_attempts: 2
+limits:
+  critic_theory_num_predict: 1024
+  critic_query_num_predict: 256
+  correction_theory_num_predict: 4096
+  correction_query_num_predict: 512
+  maximum_new_pilot_calls: 180
+  maximum_request_characters: 100000
+  maximum_feedback_characters: 12000
+  correction_attempt_limit: 1
+reliability_policy:
+  schema_version: "1.0"
+  name: mandatory-evidence-gates-v1
+  require_structured_output: true
+  require_source_coverage: true
+  require_semantic_validation: true
+  require_critic_acceptance: true
+  require_proof_verification: true
+  correction_attempt_limit: 1

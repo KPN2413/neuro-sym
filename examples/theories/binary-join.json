@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "theory_id": "binary_join",
+  "source_statements": [
+    {"id": "s1", "text": "Alice likes Bob."},
+    {"id": "s2", "text": "Bob trusts Carol."},
+    {"id": "s3", "text": "Likes and trusts compose into connected."},
+    {"id": "q1", "text": "Is Alice connected to Carol?"}
+  ],
+  "entities": [
+    {"id": "alice", "label": "Alice"},
+    {"id": "bob", "label": "Bob"},
+    {"id": "carol", "label": "Carol"}
+  ],
+  "predicates": [
+    {"name": "likes", "arity": 2},
+    {"name": "trusts", "arity": 2},
+    {"name": "connected", "arity": 2}
+  ],
+  "facts": [
+    {"predicate": "likes", "arguments": [{"kind": "entity", "id": "alice"}, {"kind": "entity", "id": "bob"}], "negated": false, "source_id": "s1"},
+    {"predicate": "trusts", "arguments": [{"kind": "entity", "id": "bob"}, {"kind": "entity", "id": "carol"}], "negated": false, "source_id": "s2"}
+  ],
+  "rules": [
+    {
+      "id": "r1",
+      "variables": [{"name": "X"}, {"name": "Y"}, {"name": "Z"}],
+      "body": [
+        {"predicate": "likes", "arguments": [{"kind": "variable", "name": "X"}, {"kind": "variable", "name": "Y"}], "negated": false, "source_id": "s3"},
+        {"predicate": "trusts", "arguments": [{"kind": "variable", "name": "Y"}, {"kind": "variable", "name": "Z"}], "negated": false, "source_id": "s3"}
+      ],
+      "head": {"predicate": "connected", "arguments": [{"kind": "variable", "name": "X"}, {"kind": "variable", "name": "Z"}], "negated": false, "source_id": "s3"},
+      "source_id": "s3"
+    }
+  ],
+  "query": {"predicate": "connected", "arguments": [{"kind": "entity", "id": "alice"}, {"kind": "entity", "id": "carol"}], "negated": false, "source_id": "q1"}
+}

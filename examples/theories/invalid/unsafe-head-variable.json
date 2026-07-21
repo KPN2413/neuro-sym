@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "theory_id": "unsafe_head_variable",
+  "source_statements": [{"id": "s1", "text": "Alice is kind."}, {"id": "s2", "text": "Unsafe rule."}, {"id": "q1", "text": "Is Alice trusted?"}],
+  "entities": [{"id": "alice", "label": "Alice"}],
+  "predicates": [{"name": "kind", "arity": 1}, {"name": "trusted", "arity": 1}],
+  "facts": [{"predicate": "kind", "arguments": [{"kind": "entity", "id": "alice"}], "negated": false, "source_id": "s1"}],
+  "rules": [{"id": "r1", "variables": [{"name": "X"}], "body": [{"predicate": "kind", "arguments": [{"kind": "entity", "id": "alice"}], "negated": false, "source_id": "s2"}], "head": {"predicate": "trusted", "arguments": [{"kind": "variable", "name": "X"}], "negated": false, "source_id": "s2"}, "source_id": "s2"}],
+  "query": {"predicate": "trusted", "arguments": [{"kind": "entity", "id": "alice"}], "negated": false, "source_id": "q1"}
+}

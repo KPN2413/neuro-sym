@@ -4,7 +4,7 @@ VeriLogic-NS is an explainable neuro-symbolic research framework that will combi
 
 The project answers whether a conclusion follows from supplied premises. It does **not** establish that those premises are factually true.
 
-## Current implementation: Phases 1–3 infrastructure
+## Current implementation: Phases 1-5
 
 The repository provides:
 
@@ -25,8 +25,20 @@ The repository provides:
   using strict three-label Structured Outputs;
 - frozen prompts, output schema, demonstrations, and a balanced 30-example OWA development pilot;
 - bounded retry, circuit-breaker, cost-cap, response-cache, replay, telemetry, and paired-comparison support.
+- a strict semantic validator for the typed theory contract;
+- a deterministic finite Datalog-style forward-chaining engine with explicit negation;
+- four-way `ENTAILED`, `CONTRADICTED`, `UNKNOWN`, and `INCONSISTENT` query decisions;
+- canonical source-linked proof DAGs, SHA-256 identities, and independent proof replay;
+- resource-bounded reasoning CLIs and an oracle-structure ProofWriter conformance adapter.
+- a gold-isolated, loopback-only Ollama semantic parser with separate theory/query prompts;
+- strict neural fact/rule/query output schemas, neutral source IDs, and deterministic AST conversion;
+- parser-specific atomic cache/replay, typed fail-closed errors, and detailed parsing metrics.
 
-No live provider call or research pilot result is committed. The provider path requires explicit paid-use, external-transfer, and cost-cap flags even when a key exists. There is no semantic parser, symbolic solver, database, authentication, or deployment. Generated smoke outputs use a fake provider, are ignored, and are not research results.
+A zero-cost local Ollama baseline pilot and a correction-free semantic-parser pilot have completed and
+were replayed from cache. Generated records, caches, and raw metrics remain ignored local artifacts;
+no hosted provider was called. The Phase 5 aggregate result is documented honestly in
+`docs/PHASE5_PILOT_RESULTS.md`: the small local parser is the current bottleneck. There is no Phase 6
+correction/confidence system, production end-to-end API, database, authentication, or deployment.
 
 ## Prerequisites
 
@@ -123,6 +135,62 @@ uses a digest-pinned model through loopback-only Ollama with cloud features disa
 data stays local and API cost is USD 0.00. The optional OpenAI path remains implemented and mocked
 but operationally unverified; its paid live gate is unchanged. See `docs/LOCAL_LLM_BASELINE.md` and
 `docs/LLM_BASELINES.md` for the separate local and hosted-provider protocols.
+
+## Symbolic reasoning
+
+Run from the repository root with the backend environment active:
+
+```bash
+python -m verilogic_ns_api.reasoning --help
+python -m verilogic_ns_api.reasoning reason --input examples/theories/entailed.json --human
+python -m verilogic_ns_api.reasoning saturate --input examples/theories/binary-join.json
+python -m verilogic_ns_api.reasoning inspect-closure --input examples/theories/inconsistent.json
+```
+
+The engine consumes only validated `theory.v1` JSON. It supports unary/binary predicates,
+conjunctive rules, variables and constants, explicit positive/negative literals, multi-step
+reasoning, positive recursion, and query-specific inconsistency. It uses open-world semantics:
+missing evidence produces `UNKNOWN`, never an inferred negative. It does not use an LLM, parse
+natural language, perform contraposition, or establish that source premises are factually true.
+
+Proofs use [the versioned proof contract](docs/PROOF_FORMAT.md) and can be independently replayed.
+The implementation and formal semantics are documented in
+[the symbolic-engine guide](docs/SYMBOLIC_ENGINE.md).
+
+The observed Phase 4 oracle-structure checks were 300/300 on a balanced ProofWriter OWA development
+sample and 30/30 on the frozen Phase 3 development sample, with every proof verified. This is a
+symbolic ceiling using dataset-provided formal fields, not natural-language parsing performance or a
+final research result. Raw conformance records remain ignored locally, and the ProofWriter licence
+status remains unverified.
+
+## Neural semantic parser
+
+```bash
+python -m verilogic_ns_api.semantic_parsing --help
+python -m verilogic_ns_api.semantic_parsing plan --config experiments/configs/ollama-semantic-parser-pilot.yaml
+python -m verilogic_ns_api.semantic_parsing replay --config experiments/configs/ollama-semantic-parser-pilot.yaml --dataset pilot --run-id REPLAY_ID
+```
+
+The parser uses the exact local model/digest from Phase 3, sends no data externally, and never sees
+gold labels or ProofWriter formal fields. Parser errors fail closed as `ERROR`; they are never changed
+to `UNKNOWN`. See `docs/NEURAL_SEMANTIC_PARSER.md` for the architecture, commands, security boundary,
+and frozen protocol.
+
+## Validation-guided correction and abstention
+
+```bash
+python -m verilogic_ns_api.validation_correction --help
+python -m verilogic_ns_api.validation_correction plan --config experiments/configs/ollama-validation-correction-pilot.yaml
+python -m verilogic_ns_api.validation_correction replay --config experiments/configs/ollama-validation-correction-pilot.yaml --run-id REPLAY_ID
+```
+
+Phase 6 converts deterministic validation failures into bounded typed feedback, asks the same
+loopback-only local model for at most one complete replacement per theory/query, revalidates the
+replacement, and applies a separate structured fidelity critic. The final selective policy answers
+only when deterministic validation, critic acceptance, reasoning, and independent verification all
+pass. A valid `UNKNOWN` is a logical answer; `ABSTAIN` is a deliberate reliability decision and
+`ERROR` is an infrastructure failure. See `docs/VALIDATION_CORRECTION.md` and
+`docs/ABSTENTION_POLICY.md`.
 
 ## Docker
 

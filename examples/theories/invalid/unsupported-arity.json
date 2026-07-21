@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "theory_id": "unsupported_arity",
+  "source_statements": [{"id": "q1", "text": "Unsupported ternary query."}],
+  "entities": [{"id": "alice", "label": "Alice"}],
+  "predicates": [{"name": "between", "arity": 3}],
+  "facts": [],
+  "rules": [],
+  "query": {"predicate": "between", "arguments": [{"kind": "entity", "id": "alice"}], "negated": false, "source_id": "q1"}
+}

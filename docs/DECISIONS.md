@@ -23,7 +23,7 @@ This is a lightweight decision log. Future decisions append new entries; they do
 ## D-004: Require source-linked provenance
 
 **Status:** accepted
-**Decision:** Source IDs are mandatory on facts, rules, rule literals, and queries; future proofs must replay against these links.
+**Decision:** Source IDs are mandatory on facts, rules, rule literals, and queries; proofs replay against these links.
 **Reason:** Explainability requires auditable evidence rather than generated explanations.
 
 ## D-005: FastAPI and Next.js remain separate services
@@ -97,3 +97,65 @@ This is a lightweight decision log. Future decisions append new entries; they do
 **Status:** accepted
 **Decision:** `OPENAI_API_KEY` presence is insufficient to call a provider. Live execution requires separate paid-use and external-transfer flags plus a positive cap that covers the preflight worst case. Valid responses are atomically cached by all behavior-affecting request fields; replay has no live provider and fails on a miss.
 **Reason:** Commercial calls and benchmark transfer are consequential actions. Explicit gates, bounded retries/concurrency, a circuit breaker, and validated replay reduce unintended spend, duplicate work, and irreproducible evidence.
+
+## D-017: Use deterministic signed least-fixpoint reasoning
+
+**Status:** accepted
+**Decision:** The Phase 4 engine treats positive and explicit negative literals as separate signed atoms, applies safe conjunctive rules by deterministic forward chaining, and classifies both-polarity support as query-specific `INCONSISTENT`. It performs neither contraposition nor negation as failure.
+**Reason:** These semantics match the approved open-world fragment, terminate over a finite domain, and avoid both absence-as-falsity and explosive inference.
+
+## D-018: Make proofs canonical and independently replayable
+
+**Status:** accepted
+**Decision:** Conclusions carry a source-linked, SHA-256-addressed proof DAG selected by a documented canonical order. A separate verifier checks nodes/rules/sources/graph structure and independently recomputes the least-fixpoint status with a naive algorithm.
+**Reason:** Deterministic producer output alone is insufficient evidence. Independent replay exposes tampering, producer defects, and fabricated unknown results.
+
+## D-019: Limit ProofWriter adaptation to oracle formal fields
+
+**Status:** accepted
+**Decision:** Phase 4 may deterministically parse ProofWriter's provided formal S-expressions for OWA development conformance, but it may not infer formal logic from benchmark prose. Raw records and generated conformance results remain ignored.
+**Reason:** This measures the symbolic component's ceiling without conflating it with the unimplemented semantic parser or leaking the test split.
+
+## D-020: Record recovered local Git provenance
+
+**Status:** accepted
+**Decision:** The supplied source ZIP did not contain `.git`. The recovered workspace therefore has a new local history beginning with source snapshot `9cd76a6`; Phase 3 operational evidence is checkpointed at `7eddcac`. These hashes are local provenance and do not pretend to reconstruct omitted history.
+**Reason:** Honest provenance prevents the recovered repository from being confused with the original unseen Git history.
+
+## D-021: Split theory and query semantic parsing
+
+**Status:** accepted
+**Decision:** Phase 5 makes one local request per unique natural-language theory and a separate request
+per query. Prompts receive only neutral `sentN` source identifiers and text; original source IDs are
+restored from an internal non-provider mapping.
+**Reason:** Theory reuse reduces inference work, while the dedicated gold-free view makes label,
+formal-representation, proof, depth, path, and raw-key leakage structurally difficult.
+
+## D-022: Keep Phase 5 correction-free and fail closed
+
+**Status:** accepted
+**Decision:** Phase 5 performs no reflection, repair prompt, voting, confidence gate, or solver
+feedback. A parser/provider/schema/source/semantic failure becomes evaluation `ERROR`, never the valid
+open-world answer `UNKNOWN`. Only an identical transient transport retry is allowed.
+**Reason:** A correction-free baseline isolates raw semantic-parser quality and prevents hidden model
+reasoning or post-result adaptation from inflating performance.
+
+## D-023: Freeze and retain the negative parser result
+
+**Status:** accepted
+**Decision:** The final train-developed prompt/schema/runtime were frozen before the same 30-example
+development pilot used in Phases 3 and 4. Its low 10% overall accuracy and 13.33% coverage are retained
+and reported; no post-development prompt tuning is permitted.
+**Reason:** The result identifies semantic formalisation—not deterministic reasoning—as the current
+bottleneck. Negative evidence is scientifically useful and must not be hidden or tuned away.
+
+## D-024: Bound semantic correction and gate release on observable evidence
+
+**Status:** accepted before the Phase 6 development pilot  
+**Decision:** Phase 6 reuses raw Phase 5 candidates, allows at most one local neural replacement per
+theory/query, revalidates deterministically, independently verifies reasoning, and exposes an answer
+under P2 only when every mandatory evidence gate and semantic critic passes. `UNKNOWN`, `ABSTAIN`,
+and `ERROR` remain distinct.  
+**Reason:** A bounded, traceable controller measures recovery without hiding an open-ended
+self-refinement agent. Observable evidence is auditable; model self-confidence and development gold
+are not.

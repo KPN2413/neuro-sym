@@ -7,7 +7,7 @@ provider:
   name: ollama
   api_family: native_chat
   endpoint: http://127.0.0.1:11434
-  provider_version: 0.31.2
+  provider_version: 0.32.1
   model: qwen3.5:4b-q4_K_M
   model_digest: 2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd
   reasoning_effort: none

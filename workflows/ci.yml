@@ -43,6 +43,7 @@ jobs:
           python -m verilogic_ns_api.datasets --help
           python -m verilogic_ns_api.evaluation --help
           python -m verilogic_ns_api.baselines --help
+          python -m verilogic_ns_api.reasoning --help
 
       - name: Run synthetic dataset and evaluation smoke checks
         run: |
@@ -50,6 +51,7 @@ jobs:
           python -m verilogic_ns_api.evaluation run --config experiments/configs/proofwriter-smoke.yaml
           python -m verilogic_ns_api.baselines smoke --condition direct --output-root results/ci-baselines
           python -m verilogic_ns_api.baselines smoke --condition few_shot --output-root results/ci-baselines
+          python -m verilogic_ns_api.reasoning reason --input examples/theories/entailed.json --human
 
   frontend:
     name: Frontend checks

@@ -20,25 +20,32 @@ Add a versioned ProofWriter ingestion path, provenance/checksum manifest, normal
 
 ## 3. Direct and few-shot LLM baselines
 
-**Status:** implementation pass; live pilot not authorized.
+**Status:** completed with a zero-cost local Ollama pilot; hosted OpenAI execution remains unverified.
 
-Implemented the provider-independent LLM port, official OpenAI Responses adapter, versioned/hash-frozen prompts and selections, bounded retries/timeouts/concurrency, circuit breaking, usage/cost accounting, content-addressed replay, direct/few-shot conditions, paid/data-transfer gates, and mocked contract tests. No live request or pilot metric has been produced.
+Implemented the provider-independent LLM port, official OpenAI Responses adapter, versioned/hash-frozen prompts and selections, bounded retries/timeouts/concurrency, circuit breaking, usage/cost accounting, content-addressed replay, direct/few-shot conditions, paid/data-transfer gates, and mocked contract tests. The frozen 30-example direct and few-shot development pilot was executed locally through the digest-pinned Ollama adapter, followed by cache-only replay with the inference server stopped. Generated records and metrics remain ignored local artifacts rather than committed research results.
 
 **Gate:** baseline runs are reproducible, raw outputs and errors are recorded, and provider-free tests pass.
 
 ## 4. Symbolic reasoning engine
 
+**Status:** completed on `phase/04-symbolic-engine`; commit recorded in the Phase 4 completion report.
+
 Implement semantic AST checks needed by the engine, deterministic finite forward chaining, unary/binary predicates, explicit negation, open-world decisions, multi-step derivations, inconsistency detection, and source-linked proof construction/replay.
 
-**Gate:** unit, integration, and property-based logic/proof suites pass without any LLM dependency.
+**Gate:** passed with unit, integration, property-based, tamper, and formal ProofWriter conformance checks; no LLM participates in inference.
 
 ## 5. Neural semantic parser
+
+**Status:** completed on `phase/05-neural-semantic-parser`; local frozen pilot and cache-only replay
+completed with fail-closed parser errors.
 
 Implement natural-language-to-AST prompting through the approved provider port, strict parsing, parser metadata, prompt/version tracking, and evaluation against reference formalizations where available.
 
 **Gate:** parser outputs never bypass schema validation and parse/meaning errors are measured rather than hidden.
 
 ## 6. Validation, correction and abstention
+
+**Status:** implementation and train-only calibration complete; frozen development pilot pending.
 
 Add structural/semantic meaning-preservation checks, limited solver-guided correction, confidence calibration/gating, explicit correction logs, and fail-closed abstention policies.
 

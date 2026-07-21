@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "name": "phase6-train-only-critic-correction-calibration",
+  "seed": 20260713,
+  "source_manifest": "experiments/manifests/proofwriter-owa-depth5-train-demos.v1.json",
+  "source_manifest_sha256": "58d5d64f81d9b3ba6595774b95b139632b9d62aaee359cbd21d9845394ba0df0",
+  "split": "train",
+  "test_split_allowed": false,
+  "development_split_allowed": false,
+  "correction_attempt_limit": 1,
+  "corruption_categories": [
+    "duplicate_source",
+    "fact_rule_confusion",
+    "flipped_polarity",
+    "invented_premise",
+    "invented_source",
+    "missing_premise",
+    "omitted_source",
+    "query_polarity_error",
+    "query_predicate_error",
+    "unsafe_variable",
+    "wrong_arity",
+    "wrong_conclusion",
+    "wrong_constant",
+    "wrong_predicate"
+  ],
+  "contains_raw_dataset_text": false,
+  "contains_gold_ast": false,
+  "contains_gold_label": false
+}

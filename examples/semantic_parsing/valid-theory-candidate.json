@@ -1,0 +1,37 @@
+{
+  "facts": [
+    {
+      "source_id": "sent1",
+      "kind": "fact",
+      "fact": {
+        "predicate": "red",
+        "arity": 1,
+        "arguments": [{"kind": "entity", "id": "dog"}],
+        "negated": false
+      }
+    }
+  ],
+  "rules": [
+    {
+      "source_id": "sent2",
+      "kind": "rule",
+      "rule": {
+        "variables": [{"name": "X", "type": null}],
+        "body": [
+          {
+            "predicate": "red",
+            "arity": 1,
+            "arguments": [{"kind": "variable", "name": "X"}],
+            "negated": false
+          }
+        ],
+        "head": {
+          "predicate": "kind",
+          "arity": 1,
+          "arguments": [{"kind": "variable", "name": "X"}],
+          "negated": false
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "name": "phase6-validation-correction-development-freeze",
+  "frozen_before_development_evaluation": true,
+  "development_examined_before_freeze": false,
+  "test_split_used": false,
+  "model": "qwen3.5:4b-q4_K_M",
+  "model_digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+  "ollama_version": "0.32.1",
+  "runtime": {
+    "endpoint": "http://127.0.0.1:11434",
+    "temperature": 0,
+    "seed": 20260713,
+    "num_ctx": 8192,
+    "thinking": false,
+    "concurrency": 1
+  },
+  "phase5_frozen_config_sha256": "30e20a37f602dbbb259696a57d715b9d2cf43e57a1b7ab95d28dda7c036808e3",
+  "phase5_development_manifest_sha256": "16fd49a90f77aa7b59c1b55a62fa1846638beb7a3c86ea07ff97a685d76360b3",
+  "phase5_calibration_manifest_sha256": "58d5d64f81d9b3ba6595774b95b139632b9d62aaee359cbd21d9845394ba0df0",
+  "phase6_config_file_sha256": "c2cfea0ab428518d12cb3d9adc4bc355e5a45c09affff7a1af04b07ca748a606",
+  "phase6_calibration_manifest_sha256": "623d9f903e050e12053a268ed779325bc989d1d0d2d9944f0aa7939defd738b8",
+  "prompt_contract_sha256": {
+    "critic_theory": "8d47fa74cde03606fa31a415b41eb90281281aaa83e290c1d2916747d00e862f",
+    "critic_query": "74c4ccffeb83d1933cd148008dfddc6e4beb4dd318ec961dcd0e768ed7941549",
+    "correction_theory": "0d4df8971944f1bfeb607f011a1fc84557fbc3429d56057f6bc5b1a2db1d4eea",
+    "correction_query": "6a08824fb61fcb6981ea08a35358bbcb17a37108a9c973b59204627554f409ad"
+  },
+  "schema_contract_sha256": {
+    "validation_feedback": "64a3dba0d2db467c38d3970598efe917408f71226b20cecb7890bd8d5898ea6e",
+    "critic_theory": "f0bb25b63817320e2da79992b771af8ab3913775ac38932352846807055b09fb",
+    "critic_query": "3a1d562bd9084cfa51e15345dfc97c4756b3154cab9db348b753e33a75d1fa30",
+    "correction_theory": "3ec7689a1e879cfcf6d3d004e147fb36327eda286fd9b929f445d9a488cf4d1f",
+    "correction_query": "33f25d5e0eaf5f12b2830b8d69b0505330a31685249d5a5353a041e1d556bf91"
+  },
+  "reliability_policy_sha256": "d462527eb075920850701d121cc24f968e6db08880b866dc6fca9d08e1d14130",
+  "correction_attempt_limit_per_component": 1,
+  "maximum_new_development_calls": 180,
+  "calibration_run": {
+    "dataset": "train",
+    "examples": 6,
+    "new_local_calls": 21,
+    "critic_calls": 14,
+    "correction_calls": 7,
+    "semantically_recovered_components": 3,
+    "correction_regressions": 4,
+    "replay_fingerprint": "261235c613f7e8795e4022ec9ee5b68f892ec391e3e42ff2d86d231d85fdeec4"
+  }
+}

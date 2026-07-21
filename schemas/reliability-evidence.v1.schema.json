@@ -1,0 +1,79 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "attempt_count": {
+      "default": 0,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Attempt Count",
+      "type": "integer"
+    },
+    "correction_required": {
+      "title": "Correction Required",
+      "type": "boolean"
+    },
+    "correction_succeeded": {
+      "title": "Correction Succeeded",
+      "type": "boolean"
+    },
+    "critic_accepted": {
+      "title": "Critic Accepted",
+      "type": "boolean"
+    },
+    "no_progress_detected": {
+      "default": false,
+      "title": "No Progress Detected",
+      "type": "boolean"
+    },
+    "proof_or_result_verified": {
+      "default": false,
+      "title": "Proof Or Result Verified",
+      "type": "boolean"
+    },
+    "reasoning_completed": {
+      "default": false,
+      "title": "Reasoning Completed",
+      "type": "boolean"
+    },
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "semantic_validation_passed": {
+      "title": "Semantic Validation Passed",
+      "type": "boolean"
+    },
+    "source_coverage_complete": {
+      "title": "Source Coverage Complete",
+      "type": "boolean"
+    },
+    "structured_output_valid": {
+      "title": "Structured Output Valid",
+      "type": "boolean"
+    },
+    "unexpected_inconsistency": {
+      "default": false,
+      "title": "Unexpected Inconsistency",
+      "type": "boolean"
+    },
+    "unresolved_warning_count": {
+      "default": 0,
+      "maximum": 64,
+      "minimum": 0,
+      "title": "Unresolved Warning Count",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "structured_output_valid",
+    "source_coverage_complete",
+    "semantic_validation_passed",
+    "critic_accepted",
+    "correction_required",
+    "correction_succeeded"
+  ],
+  "title": "ReliabilityEvidence",
+  "type": "object"
+}

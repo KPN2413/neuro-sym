@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "theory_id": "recursive_cycle",
+  "source_statements": [
+    {"id": "s1", "text": "Alice is ready."},
+    {"id": "s2", "text": "Ready implies active."},
+    {"id": "s3", "text": "Active implies ready."},
+    {"id": "q1", "text": "Is Alice active?"}
+  ],
+  "entities": [{"id": "alice", "label": "Alice"}],
+  "predicates": [{"name": "ready", "arity": 1}, {"name": "active", "arity": 1}],
+  "facts": [{"predicate": "ready", "arguments": [{"kind": "entity", "id": "alice"}], "negated": false, "source_id": "s1"}],
+  "rules": [
+    {
+      "id": "r1", "variables": [{"name": "X"}],
+      "body": [{"predicate": "ready", "arguments": [{"kind": "variable", "name": "X"}], "negated": false, "source_id": "s2"}],
+      "head": {"predicate": "active", "arguments": [{"kind": "variable", "name": "X"}], "negated": false, "source_id": "s2"}, "source_id": "s2"
+    },
+    {
+      "id": "r2", "variables": [{"name": "X"}],
+      "body": [{"predicate": "active", "arguments": [{"kind": "variable", "name": "X"}], "negated": false, "source_id": "s3"}],
+      "head": {"predicate": "ready", "arguments": [{"kind": "variable", "name": "X"}], "negated": false, "source_id": "s3"}, "source_id": "s3"
+    }
+  ],
+  "query": {"predicate": "active", "arguments": [{"kind": "entity", "id": "alice"}], "negated": false, "source_id": "q1"}
+}

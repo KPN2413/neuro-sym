@@ -1,0 +1,75 @@
+{
+  "$defs": {
+    "CriticCategory": {
+      "enum": [
+        "FACT_RULE_CONFUSION",
+        "PREDICATE_MISMATCH",
+        "POLARITY_MISMATCH",
+        "ARITY_MISMATCH",
+        "CONSTANT_MISMATCH",
+        "VARIABLE_MISMATCH",
+        "PREMISE_MISMATCH",
+        "CONCLUSION_MISMATCH",
+        "OMITTED_MEANING",
+        "INVENTED_MEANING",
+        "OTHER_MISMATCH"
+      ],
+      "title": "CriticCategory",
+      "type": "string"
+    },
+    "CriticDecision": {
+      "enum": [
+        "ACCEPT",
+        "REVISE"
+      ],
+      "title": "CriticDecision",
+      "type": "string"
+    },
+    "QueryCriticIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/CriticCategory"
+        },
+        "description": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "source_id": {
+          "const": "query",
+          "default": "query",
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "category",
+        "description"
+      ],
+      "title": "QueryCriticIssue",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "decision": {
+      "$ref": "#/$defs/CriticDecision"
+    },
+    "issues": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/QueryCriticIssue"
+      },
+      "maxItems": 8,
+      "title": "Issues",
+      "type": "array"
+    }
+  },
+  "required": [
+    "decision"
+  ],
+  "title": "QueryCriticReport",
+  "type": "object"
+}

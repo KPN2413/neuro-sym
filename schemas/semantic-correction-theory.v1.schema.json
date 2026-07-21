@@ -1,0 +1,273 @@
+{
+  "$defs": {
+    "CandidateFactLiteral": {
+      "additionalProperties": false,
+      "properties": {
+        "arguments": {
+          "items": {
+            "$ref": "#/$defs/EntityTerm"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Arguments",
+          "type": "array"
+        },
+        "arity": {
+          "enum": [
+            1,
+            2
+          ],
+          "title": "Arity",
+          "type": "integer"
+        },
+        "negated": {
+          "title": "Negated",
+          "type": "boolean"
+        },
+        "predicate": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Predicate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "predicate",
+        "arity",
+        "arguments",
+        "negated"
+      ],
+      "title": "CandidateFactLiteral",
+      "type": "object"
+    },
+    "CandidateFactStatement": {
+      "additionalProperties": false,
+      "properties": {
+        "fact": {
+          "$ref": "#/$defs/CandidateFactLiteral"
+        },
+        "kind": {
+          "const": "fact",
+          "title": "Kind",
+          "type": "string"
+        },
+        "source_id": {
+          "pattern": "^sent[1-9][0-9]*$",
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "kind",
+        "fact"
+      ],
+      "title": "CandidateFactStatement",
+      "type": "object"
+    },
+    "CandidateRule": {
+      "additionalProperties": false,
+      "properties": {
+        "body": {
+          "items": {
+            "$ref": "#/$defs/CandidateRuleLiteral"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Body",
+          "type": "array"
+        },
+        "head": {
+          "$ref": "#/$defs/CandidateRuleLiteral"
+        },
+        "variables": {
+          "items": {
+            "$ref": "#/$defs/VariableDefinition"
+          },
+          "maxItems": 32,
+          "title": "Variables",
+          "type": "array"
+        }
+      },
+      "required": [
+        "variables",
+        "body",
+        "head"
+      ],
+      "title": "CandidateRule",
+      "type": "object"
+    },
+    "CandidateRuleLiteral": {
+      "additionalProperties": false,
+      "properties": {
+        "arguments": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "entity": "#/$defs/EntityTerm",
+                "variable": "#/$defs/VariableTerm"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/EntityTerm"
+              },
+              {
+                "$ref": "#/$defs/VariableTerm"
+              }
+            ]
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Arguments",
+          "type": "array"
+        },
+        "arity": {
+          "enum": [
+            1,
+            2
+          ],
+          "title": "Arity",
+          "type": "integer"
+        },
+        "negated": {
+          "title": "Negated",
+          "type": "boolean"
+        },
+        "predicate": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Predicate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "predicate",
+        "arity",
+        "arguments",
+        "negated"
+      ],
+      "title": "CandidateRuleLiteral",
+      "type": "object"
+    },
+    "CandidateRuleStatement": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "rule",
+          "title": "Kind",
+          "type": "string"
+        },
+        "rule": {
+          "$ref": "#/$defs/CandidateRule"
+        },
+        "source_id": {
+          "pattern": "^sent[1-9][0-9]*$",
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "kind",
+        "rule"
+      ],
+      "title": "CandidateRuleStatement",
+      "type": "object"
+    },
+    "EntityTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "entity",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "id"
+      ],
+      "title": "EntityTerm",
+      "type": "object"
+    },
+    "VariableDefinition": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "pattern": "^[A-Z][A-Za-z0-9_]{0,63}$",
+          "title": "Name",
+          "type": "string"
+        },
+        "type": {
+          "anyOf": [
+            {
+              "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,127}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Type"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "VariableDefinition",
+      "type": "object"
+    },
+    "VariableTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "variable",
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "pattern": "^[A-Z][A-Za-z0-9_]{0,63}$",
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "name"
+      ],
+      "title": "VariableTerm",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "facts": {
+      "items": {
+        "$ref": "#/$defs/CandidateFactStatement"
+      },
+      "maxItems": 256,
+      "title": "Facts",
+      "type": "array"
+    },
+    "rules": {
+      "items": {
+        "$ref": "#/$defs/CandidateRuleStatement"
+      },
+      "maxItems": 256,
+      "title": "Rules",
+      "type": "array"
+    }
+  },
+  "required": [
+    "facts",
+    "rules"
+  ],
+  "title": "CandidateTheoryOutput",
+  "type": "object"
+}

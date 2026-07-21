@@ -2,7 +2,7 @@
 
 ## Status
 
-Phase 3 implements frozen direct and fixed few-shot baseline infrastructure over the Phase 2 runner. No live provider pilot has been authorized or reported. Synthetic fake-provider metrics verify engineering behavior only.
+Phase 3 completed a frozen zero-cost local direct/few-shot pilot over the Phase 2 runner; the hosted OpenAI path remains mocked but operationally unverified. Phase 4 adds deterministic symbolic oracle-structure conformance. Phase 5 adds a frozen local natural-language-to-AST pilot with no correction. These pilot and conformance measurements are engineering evidence, not final capstone results.
 
 ## Units and data
 
@@ -50,8 +50,46 @@ Approved perturbations must be meaning-preserving and versioned. Candidate group
 
 ## Proof evaluation
 
-Proofs are scored only after replay against the accepted AST. Planned checks include conclusion match, valid rule applications, antecedent availability, source-ID validity, polarity preservation, and source completeness. Provider-authored proof prose is never accepted as formal evidence.
+Proofs are accepted only after replay against the validated AST. Phase 4 checks conclusion/status,
+exact source facts and text, grounded rule applications, complete substitutions, antecedent
+availability/order, source-ID validity, polarity, depth, hash integrity, reachability, and
+acyclicity. A separately implemented naive closure validates even empty `UNKNOWN` proofs.
+Provider-authored proof prose is never accepted as formal evidence.
+
+The Phase 4 conformance protocol uses only ProofWriter's existing formal S-expressions, only the OWA
+development split, and no natural-language parsing. The balanced oracle-structure sample contains 20
+examples in every depth (0/1/2/3/5) by label (ENTAILED/CONTRADICTED/UNKNOWN) cell, for 300 total.
+The same-30 check reuses the exact frozen Phase 3 development IDs. Report these as symbolic-ceiling
+results, never semantic-parser or end-to-end results. Raw records and reports remain ignored locally.
 
 ## Reporting
 
 Separate confirmatory from exploratory analyses. Publish configuration and failed-run counts alongside successful results. Do not infer factual truth from logical entailment, do not hide null or negative findings, and do not claim causation beyond controlled ablations.
+
+## Phase 5 semantic-parser protocol
+
+Prompt development used synthetic inputs and six training examples only. The theory prompt, query
+prompt, output schemas, runtime, calibration manifest, and exact Phase 3 30-example development
+manifest were hash-frozen before any Phase 5 development call. The parser receives only neutral
+source IDs plus natural-language statements/query. Formal fields, labels, proofs, depth, raw keys,
+and test records are excluded. One theory request is reused across questions; query parsing is
+separate. Phase 5 permits no semantic repair, feedback, reflection, voting, or solver-guided retry.
+
+Report structural validity, source coverage, exact theory/query accuracy, canonical statement and
+closure precision/recall/F1, component/construction accuracy, complete-pipeline classification,
+coverage/selective risk, error taxonomy, tokens, latency, and cache use. Parser failures count as
+`ERROR`, never `UNKNOWN`. The frozen result may not be used to revise Phase 5 prompts.
+
+## Phase 6 validation/correction protocol
+
+Phase 6 replays the frozen Phase 5 raw cache, converts deterministic failures to bounded typed
+feedback, applies a local semantic critic, and permits one complete replacement correction per
+theory and per query. Corrected outputs re-enter the unchanged Phase 5 validators and the Phase 4
+reasoner/verifier. P0 reproduces raw Phase 5, P1 answers deterministically valid corrected outputs,
+and P2 additionally requires critic acceptance. P1/P2 share candidates and calls.
+
+Critic/correction prompt development and controlled corruptions use synthetic or training data only.
+All controller artifacts and the evidence-gate policy are hash-frozen before development evaluation.
+Gold ASTs, labels, proofs, depth, closure, and oracle results cannot enter requests or decisions.
+Evaluation against gold happens only after final component decisions. The valid logical label
+`UNKNOWN` remains distinct from deliberate `ABSTAIN` and infrastructure `ERROR`.

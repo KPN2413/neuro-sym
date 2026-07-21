@@ -1,0 +1,75 @@
+{
+  "$defs": {
+    "CandidateFactLiteral": {
+      "additionalProperties": false,
+      "properties": {
+        "arguments": {
+          "items": {
+            "$ref": "#/$defs/EntityTerm"
+          },
+          "maxItems": 2,
+          "minItems": 1,
+          "title": "Arguments",
+          "type": "array"
+        },
+        "arity": {
+          "enum": [
+            1,
+            2
+          ],
+          "title": "Arity",
+          "type": "integer"
+        },
+        "negated": {
+          "title": "Negated",
+          "type": "boolean"
+        },
+        "predicate": {
+          "pattern": "^[a-z][a-z0-9_]{0,63}$",
+          "title": "Predicate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "predicate",
+        "arity",
+        "arguments",
+        "negated"
+      ],
+      "title": "CandidateFactLiteral",
+      "type": "object"
+    },
+    "EntityTerm": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "entity",
+          "title": "Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "id"
+      ],
+      "title": "EntityTerm",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "query": {
+      "$ref": "#/$defs/CandidateFactLiteral"
+    }
+  },
+  "required": [
+    "query"
+  ],
+  "title": "CandidateQueryOutput",
+  "type": "object"
+}

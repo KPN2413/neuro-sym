@@ -1,0 +1,75 @@
+{
+  "$defs": {
+    "CriticCategory": {
+      "enum": [
+        "FACT_RULE_CONFUSION",
+        "PREDICATE_MISMATCH",
+        "POLARITY_MISMATCH",
+        "ARITY_MISMATCH",
+        "CONSTANT_MISMATCH",
+        "VARIABLE_MISMATCH",
+        "PREMISE_MISMATCH",
+        "CONCLUSION_MISMATCH",
+        "OMITTED_MEANING",
+        "INVENTED_MEANING",
+        "OTHER_MISMATCH"
+      ],
+      "title": "CriticCategory",
+      "type": "string"
+    },
+    "CriticDecision": {
+      "enum": [
+        "ACCEPT",
+        "REVISE"
+      ],
+      "title": "CriticDecision",
+      "type": "string"
+    },
+    "TheoryCriticIssue": {
+      "additionalProperties": false,
+      "properties": {
+        "category": {
+          "$ref": "#/$defs/CriticCategory"
+        },
+        "description": {
+          "maxLength": 240,
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "source_id": {
+          "pattern": "^sent[1-9][0-9]*$",
+          "title": "Source Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_id",
+        "category",
+        "description"
+      ],
+      "title": "TheoryCriticIssue",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "decision": {
+      "$ref": "#/$defs/CriticDecision"
+    },
+    "issues": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/TheoryCriticIssue"
+      },
+      "maxItems": 64,
+      "title": "Issues",
+      "type": "array"
+    }
+  },
+  "required": [
+    "decision"
+  ],
+  "title": "TheoryCriticReport",
+  "type": "object"
+}

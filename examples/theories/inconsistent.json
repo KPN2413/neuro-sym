@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "theory_id": "inconsistent_example",
+  "source_statements": [
+    {"id": "s1", "text": "Alice is red."},
+    {"id": "s2", "text": "Alice is not red."},
+    {"id": "q1", "text": "Is Alice red?"}
+  ],
+  "entities": [{"id": "alice", "label": "Alice"}],
+  "predicates": [{"name": "red", "arity": 1}],
+  "facts": [
+    {
+      "predicate": "red",
+      "arguments": [{"kind": "entity", "id": "alice"}],
+      "negated": false,
+      "source_id": "s1"
+    },
+    {
+      "predicate": "red",
+      "arguments": [{"kind": "entity", "id": "alice"}],
+      "negated": true,
+      "source_id": "s2"
+    }
+  ],
+  "rules": [],
+  "query": {
+    "predicate": "red",
+    "arguments": [{"kind": "entity", "id": "alice"}],
+    "negated": false,
+    "source_id": "q1"
+  }
+}

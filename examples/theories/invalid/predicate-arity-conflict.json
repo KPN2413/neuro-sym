@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0",
+  "theory_id": "predicate_arity_conflict",
+  "source_statements": [{"id": "s1", "text": "Alice likes Bob."}, {"id": "q1", "text": "Is Alice liked?"}],
+  "entities": [{"id": "alice", "label": "Alice"}, {"id": "bob", "label": "Bob"}],
+  "predicates": [{"name": "likes", "arity": 1}],
+  "facts": [{"predicate": "likes", "arguments": [{"kind": "entity", "id": "alice"}, {"kind": "entity", "id": "bob"}], "negated": false, "source_id": "s1"}],
+  "rules": [],
+  "query": {"predicate": "likes", "arguments": [{"kind": "entity", "id": "alice"}], "negated": false, "source_id": "q1"}
+}

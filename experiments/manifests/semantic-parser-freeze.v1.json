@@ -1,0 +1,76 @@
+{
+  "schema_version": "1.0",
+  "frozen_at_utc": "2026-07-21T14:41:06Z",
+  "scope": "Phase 5 local neural semantic parser development pilot",
+  "model": {
+    "provider": "ollama",
+    "provider_version": "0.32.1",
+    "tag": "qwen3.5:4b-q4_K_M",
+    "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+    "endpoint": "http://127.0.0.1:11434"
+  },
+  "files": {
+    "config": {
+      "path": "experiments/configs/ollama-semantic-parser-pilot.yaml",
+      "sha256": "30e20a37f602dbbb259696a57d715b9d2cf43e57a1b7ab95d28dda7c036808e3"
+    },
+    "theory_prompt": {
+      "path": "prompts/semantic_parsing/theory/v1.md",
+      "file_sha256": "c39f059cb0b62866272752157f1734c346acfc9c4b8c585b1c614a4910fdffb2",
+      "registry_sha256": "b4be4c4d028b4cf954cdf367cd01be21e354aa164e215d77f567f860e759e54f"
+    },
+    "query_prompt": {
+      "path": "prompts/semantic_parsing/query/v1.md",
+      "file_sha256": "14b64b0fc3bcc90c369962b0f62ae7f7f35e01ce7657e715c679150ac5eaa6eb",
+      "registry_sha256": "eb11a6764cfbb8f98bc5bfd8adf8e999e4544d823d7129b0ea6f1e4b45cbf874"
+    },
+    "theory_output_schema": {
+      "path": "schemas/neural-theory-output.v1.schema.json",
+      "file_sha256": "c97a83f5456fbe90ba4f3d414bc964428ec53b0fff224437dc9a1e4cf45e5775",
+      "canonical_sha256": "3ec7689a1e879cfcf6d3d004e147fb36327eda286fd9b929f445d9a488cf4d1f"
+    },
+    "query_output_schema": {
+      "path": "schemas/neural-query-output.v1.schema.json",
+      "file_sha256": "e34733120d79bba5a8186ca1591c018758d40e87fdd301a10ad9232fe3290249",
+      "canonical_sha256": "33f25d5e0eaf5f12b2830b8d69b0505330a31685249d5a5353a041e1d556bf91"
+    },
+    "development_pilot_manifest": {
+      "path": "experiments/manifests/proofwriter-owa-depth5-dev-pilot.v1.json",
+      "sha256": "16fd49a90f77aa7b59c1b55a62fa1846638beb7a3c86ea07ff97a685d76360b3"
+    },
+    "training_calibration_manifest": {
+      "path": "experiments/manifests/proofwriter-owa-depth5-train-demos.v1.json",
+      "sha256": "58d5d64f81d9b3ba6595774b95b139632b9d62aaee359cbd21d9845394ba0df0"
+    }
+  },
+  "calibration_v2": {
+    "examples": 6,
+    "complete_valid": 5,
+    "end_to_end_accuracy": 0.5,
+    "exact_theory_rate": 0.16666666666666666,
+    "exact_query_rate": 0.8333333333333334,
+    "source_coverage_rate": 1.0,
+    "local_metrics_file_sha256": "6b480c6df2e15974a493c94f6a9b9793a190502ac5977e4c91a941e90a4a60b9",
+    "formal_coverage_categories": [
+      "positive_unary_fact",
+      "negative_unary_fact",
+      "positive_binary_fact",
+      "negative_binary_fact",
+      "single_premise_rule",
+      "conjunctive_rule",
+      "binary_rule",
+      "named_constant_in_rule",
+      "repeated_variable_or_join",
+      "negative_premise",
+      "negative_head",
+      "positive_binary_query",
+      "negative_binary_query"
+    ]
+  },
+  "policy": {
+    "development_examined_before_freeze": false,
+    "test_split_allowed": false,
+    "semantic_retries_allowed": false,
+    "hosted_calls_allowed": false
+  }
+}
